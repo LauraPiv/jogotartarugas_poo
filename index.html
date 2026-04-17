@@ -111,6 +111,19 @@
               <p>Marrom e vive nos corais.</p>
             </button>
           </div>
+          </div>
+          <div id="naming-section" class="hidden" style="margin-top: 2rem; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+             <input type="text" id="turtle-name-input" placeholder="Dê um nome para ela..." style="padding: 10px; font-size: 1.2rem; border-radius: 10px; border: 2px solid var(--primary); text-align: center; width: 80%;">
+             <button id="btn-confirm-turtle" class="btn-primary">Criar Tartaruga!</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tela de Chocar o Ovo -->
+      <section id="egg-hatch-screen" class="overlay hidden" style="z-index: 200; background: rgba(0,0,0,0.85);">
+        <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+            <div id="hatching-egg" class="turtle-sprite ovinho" style="width: 250px; height: 250px; animation: shake-egg 0.5s infinite;"></div>
+            <h2 id="hatching-text" style="color: white; margin-top: 3rem; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-weight: 800;">O ovo está chocando...</h2>
         </div>
       </section>
     </div>

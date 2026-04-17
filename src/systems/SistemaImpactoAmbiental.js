@@ -3,6 +3,7 @@ export class SistemaImpactoAmbiental {
         this.saudeOceano = 100;
         this.elementUI = elementUI; // O elemento do DOM
         this.bgElement = document.getElementById('game-environment');
+        this.estagioFundo = 'praia';
     }
 
     modificarSaude(valor) {
@@ -12,6 +13,11 @@ export class SistemaImpactoAmbiental {
         
         this.atualizarUI();
     }
+    
+    modificarFundo(fundoStr) {
+        this.estagioFundo = fundoStr;
+        this.atualizarUI();
+    }
 
     atualizarUI() {
         if (this.elementUI) {
@@ -19,11 +25,11 @@ export class SistemaImpactoAmbiental {
         }
 
         if (this.bgElement) {
-            this.bgElement.classList.remove('praia', 'oceano-raso', 'oceano-poluido');
+            this.bgElement.classList.remove('praia', 'oceano-raso', 'oceano-profundo', 'recifes', 'oceano-poluido');
             if (this.saudeOceano < 40) {
                 this.bgElement.classList.add('oceano-poluido');
             } else {
-                this.bgElement.classList.add('oceano-raso');
+                this.bgElement.classList.add(this.estagioFundo);
             }
         }
     }

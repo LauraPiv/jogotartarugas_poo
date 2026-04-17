@@ -1,9 +1,10 @@
-import { TartarugaVerde, TartarugaCabecuda, TartarugaDePente } from '../entities/Especies.js';
+import { TartarugaVerde, TartarugaOliva, TartarugaDePente } from '../entities/Especies.js';
 import { ComportamentoTartaruga } from '../entities/ComportamentoTartaruga.js';
 import { SistemaEducacao } from './SistemaEducacao.js';
 import { SistemaEvolucao } from './SistemaEvolucao.js';
 import { SistemaImpactoAmbiental } from './SistemaImpactoAmbiental.js';
-import { JogoDesvio } from '../minigames/JogoDesvio.js';
+import { GerenciadorMissoes } from './GerenciadorMissoes.js';
+import { JogoNascimento } from '../minigames/JogoDesvio.js';
 import { JogoSelecao } from '../minigames/JogoSelecao.js';
 import { Album } from '../collections/Album.js';
 
@@ -27,10 +28,13 @@ export class Game {
             minigameTitle: document.getElementById('minigame-title'),
             btnMissions: document.getElementById('btn-missions'),
             missionsMenu: document.getElementById('missions-menu'),
+            missionsList: document.querySelector('.mission-list'),
             btnAlbum: document.getElementById('btn-album'),
             albumMenu: document.getElementById('album-menu'),
             btnExitMinigame: document.getElementById('btn-exit-minigame')
         };
+        
+        this.gerenciadorMissoes = new GerenciadorMissoes(this.ui.missionsList, (faseId) => this.iniciarMinigame(faseId));
 
         this.comportamento = null;
 
@@ -38,9 +42,30 @@ export class Game {
     }
 
     bindEvents() {
+        // Tela Inicial -> Seleção de Espécie
+        document.getElementById('btn-start').addEventListener('click', () => {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('character-select').classList.remove('hidden');
+        });
+
         // Seleção de Espécie
+        let selectedSpeciesStr = null;
         document.querySelectorAll('.species-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => this.selecionarEspecie(e.currentTarget.dataset.species));
+            btn.addEventListener('click', (e) => {
+                // Remove selected de todos
+                document.querySelectorAll('.species-btn').forEach(b => b.classList.remove('selected'));
+                e.currentTarget.classList.add('selected');
+                selectedSpeciesStr = e.currentTarget.dataset.species;
+                document.getElementById('naming-section').classList.remove('hidden');
+            });
+        });
+
+        // Confirmação do Nome e Nascimento
+        document.getElementById('btn-confirm-turtle').addEventListener('click', () => {
+             const inputStr = document.getElementById('turtle-name-input').value.trim();
+             if(!selectedSpeciesStr) return;
+             const nomeDaTartaruga = inputStr || "Tartaruguinha";
+             this.selecionarEspecie(selectedSpeciesStr, nomeDaTartaruga);
         });
 
         // Interação no Hub
@@ -63,15 +88,7 @@ export class Game {
             this.ui.albumMenu.classList.remove('hidden');
         });
 
-        // Iniciar Missão
-        document.querySelectorAll('.mission-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const fase = e.currentTarget.dataset.phase;
-                if (!e.currentTarget.classList.contains('locked')) {
-                    this.iniciarMinigame(fase);
-                }
-            });
-        });
+        // Iniciar Missão movido para o GerenciadorMissoes
 
         // Sair Minigame
         this.ui.btnExitMinigame.addEventListener('click', () => {
@@ -79,13 +96,14 @@ export class Game {
         });
     }
 
-    selecionarEspecie(especieStr) {
+    selecionarEspecie(especieStr, nome) {
         document.getElementById('character-select').classList.add('hidden');
+        document.getElementById('egg-hatch-screen').classList.remove('hidden');
         
         switch (especieStr) {
-            case 'verde': this.playerTartaruga = new TartarugaVerde("Verdinha"); break;
-            case 'cabecuda': this.playerTartaruga = new TartarugaCabecuda("Cabeção"); break;
-            case 'pente': this.playerTartaruga = new TartarugaDePente("Pentinha"); break;
+            case 'verde': this.playerTartaruga = new TartarugaVerde(nome); break;
+            case 'oliva': this.playerTartaruga = new TartarugaOliva(nome); break;
+            case 'pente': this.playerTartaruga = new TartarugaDePente(nome); break;
         }
 
         const sprite = document.getElementById('turtle-sprite');
@@ -93,8 +111,18 @@ export class Game {
         this.comportamento = new ComportamentoTartaruga(sprite, bubble);
         
         this.atualizarUIInfo();
-        this.comportamento.falar(this.playerTartaruga.falaInicial);
-        this.comportamento.atualizarVisualidadeIdade('filhote'); // Começa como filhote
+        
+        // Simula o chocar do ovo
+        setTimeout(() => {
+             document.getElementById('egg-hatch-screen').classList.add('hidden');
+             this.comportamento.falar(this.playerTartaruga.falaInicial);
+             this.comportamento.atualizarVisualidadeIdade('filhote'); // Começa como filhote
+             
+             // Inicializa missões liberando da primeira
+             // Consideraremos que a primeira fase ('1') é o nascimento
+             this.gerenciadorMissoes.atualizarProgresso('filhote', null);
+             this.sisImpacto.modificarFundo('praia');
+        }, 3000);
     }
 
     ganharXP(quantidade) {
@@ -102,15 +130,17 @@ export class Game {
         this.atualizarUIInfo();
         
         if (this.sisEvolucao.verificarEvolucao(this.playerTartaruga)) {
-            // Se evoluiu, atualiza a UI
             this.comportamento.atualizarVisualidadeIdade(this.playerTartaruga.idade);
             this.comportamento.falar(`Eba! Eu evoluí para ${this.playerTartaruga.idade}!`);
             
-            // Se virou bebê, desbloqueia fase 2 etc (Lógica simplificada)
-            if (this.playerTartaruga.idade === 'filhote') {
-                 document.querySelector('.mission-btn[data-phase="2"]')?.classList.remove('locked');
-            }
+            // Muda fundo dependendo da evolução
+            if (this.playerTartaruga.idade === 'adolescente') this.sisImpacto.modificarFundo('oceano-raso');
+            if (this.playerTartaruga.idade === 'adulta') this.sisImpacto.modificarFundo('oceano-profundo');
+            if (this.playerTartaruga.idade === 'idosa') this.sisImpacto.modificarFundo('recifes');
         }
+        
+        // Sempre checa missões ao ganhar XP ou mudar idade
+        this.gerenciadorMissoes.atualizarProgresso(this.playerTartaruga.idade, null);
     }
 
     atualizarUIInfo() {
@@ -122,9 +152,10 @@ export class Game {
         this.ui.hubScreen.classList.remove('active');
         this.ui.minigameScreen.classList.add('active');
         this.ui.minigameTitle.textContent = `Fase ${fase}`;
+        this.faseAtualEmAndamento = fase;
 
         if (fase === '1') {
-            this.minigameAtual = new JogoDesvio(this.ui.minigameContainer, (resultado) => this.finalizarMinigame(resultado));
+            this.minigameAtual = new JogoNascimento(this.ui.minigameContainer, (resultado) => this.finalizarMinigame(resultado));
             this.minigameAtual.iniciar();
         } else if (fase === '2') {
             this.minigameAtual = new JogoSelecao(this.ui.minigameContainer, (resultado) => this.finalizarMinigame(resultado));
@@ -135,6 +166,10 @@ export class Game {
     finalizarMinigame(resultado) {
         alert(resultado.mensagem + `\nXP Ganho: ${resultado.xp}`);
         this.ganharXP(resultado.xp);
+        
+        // Atualiza missoes com a que acabou de passar
+        this.gerenciadorMissoes.atualizarProgresso(this.playerTartaruga.idade, this.faseAtualEmAndamento);
+        this.album.desbloquearPorId(this.faseAtualEmAndamento); // desbloqueia figurinha ao passar fase
         
         if (!resultado.vitoria && typeof resultado.danoAmbiental !== "undefined") {
             this.sisImpacto.modificarSaude(-10);
