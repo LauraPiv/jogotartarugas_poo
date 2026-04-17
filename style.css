@@ -1,0 +1,388 @@
+:root {
+  --primary: #00B4D8;
+  --secondary: #0077B6;
+  --accent: #E9C46A;
+  --danger: #E76F51;
+  --success: #2A9D8F;
+  --font-main: 'Outfit', sans-serif;
+  --text-light: #F8F9FA;
+  --text-dark: #2B2D42;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  color: var(--text-dark);
+  overflow: hidden;
+  background-color: #03045E;
+}
+
+/* Background Layers */
+#game-environment {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 2s ease-in-out;
+}
+
+.environment.praia {
+  background: linear-gradient(to bottom, #87CEEB 40%, #E9C46A 40%);
+}
+
+.environment.oceano-raso {
+  background: linear-gradient(to bottom, #48CAE4 0%, #0077B6 100%);
+}
+
+.environment.oceano-poluido {
+  background: linear-gradient(to bottom, #5B616A 0%, #293038 100%);
+}
+
+/* App Container */
+#app {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top Bar */
+.top-bar {
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Screens */
+.screen {
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  position: relative;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* Hub */
+#home-hub {
+  align-items: center;
+  justify-content: center;
+}
+
+.turtle-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.turtle-container:hover {
+  transform: scale(1.05);
+}
+
+.turtle-sprite {
+  width: 150px;
+  height: 150px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: all 0.3s ease;
+}
+
+/* CSS Turtle Shapes for MVP */
+.turtle-sprite.ovinho {
+  background-color: #F4F1DE;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1);
+  animation: float 3s ease-in-out infinite;
+}
+
+.turtle-sprite.filhote,
+.turtle-sprite.adolescente,
+.turtle-sprite.adulta,
+.turtle-sprite.idosa {
+  background-image: url('/cute_turtle.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  mix-blend-mode: multiply;
+  animation: float 3s ease-in-out infinite;
+}
+
+.turtle-sprite.filhote { width: 150px; height: 150px; }
+.turtle-sprite.adolescente { width: 180px; height: 180px; }
+.turtle-sprite.adulta { width: 220px; height: 220px; }
+.turtle-sprite.idosa { width: 250px; height: 250px; filter: grayscale(30%); }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes swim {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+.speech-bubble {
+  position: absolute;
+  top: -80px;
+  background: white;
+  padding: 15px;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  max-width: 250px;
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 10px 10px 0;
+  border-style: solid;
+  border-color: white transparent transparent transparent;
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.5) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* UI Controls */
+.bottom-menu {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+button {
+  font-family: var(--font-main);
+  font-weight: 800;
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.btn-primary { background: var(--primary); }
+.btn-primary:hover { background: #0096C7; transform: translateY(-2px); }
+
+.btn-secondary { background: var(--accent); color: var(--text-dark); }
+.btn-secondary:hover { background: #E76F51; color: white; transform: translateY(-2px); }
+
+.btn-danger { background: var(--danger); }
+.btn-danger:hover { background: #D62828; }
+
+/* Modals & Overlays */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2.5rem;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  position: relative;
+  text-align: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  color: var(--text-dark);
+  box-shadow: none;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+}
+
+.close-btn:hover {
+  transform: scale(1.1);
+  background: rgba(0,0,0,0.1);
+}
+
+/* Character Select */
+.species-list {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.species-btn {
+  flex: 1;
+  background: white;
+  border: 2px solid var(--primary);
+  color: var(--text-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.species-btn:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.species-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+.species-icon.verde { background: #2A9D8F; }
+.species-icon.cabecuda { background: #E76F51; }
+.species-icon.pente { background: #E9C46A; }
+
+/* Mission Menu */
+.mission-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.mission-btn {
+  background: var(--secondary);
+  text-align: left;
+}
+
+.mission-btn h3 { margin-bottom: 0.5rem; }
+.mission-btn p { font-size: 0.9rem; font-weight: 400; opacity: 0.9; }
+
+.mission-btn.locked {
+  background: #aaa;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Minigame Area */
+.minigame-header {
+  padding: 1rem;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.minigame-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Jogo de Desvio CSS */
+.desvio-player {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background-color: var(--success);
+  border-radius: 50%;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: left 0.1s;
+}
+
+.desvio-obstacle {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: var(--danger);
+  border-radius: 10px;
+}
+
+/* Álbum */
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.figurinha-card {
+  background: #f1f3f5;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.figurinha-card:hover {
+  transform: translateY(-5px);
+}
+
+.figurinha-card.locked {
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+
+.figurinha-img {
+  width: 100%;
+  height: 80px;
+  background: var(--primary);
+  border-radius: 5px;
+  margin-bottom: 10px;
+}

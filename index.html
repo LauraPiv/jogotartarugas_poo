@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projeto Tamar - Resgate das Tartarugas</title>
+    <link rel="stylesheet" href="/style.css">
+    <!-- Google Fonts for Modern Aesthetics -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Fundo dinâmico (Oceano/Praia) -->
+    <div id="game-environment" class="environment praia"></div>
+
+    <div id="app">
+      <!-- Sistema de UI Principal -->
+      <header class="top-bar">
+        <div class="stats">
+          <div class="stat-item" id="ocean-health">💧 Saúde do Oceano: <span>100%</span></div>
+          <div class="stat-item" id="player-xp">⭐ XP: <span>0</span></div>
+        </div>
+      </header>
+
+      <!-- Container do Hub Principal (Talking Tom Style) -->
+      <main id="home-hub" class="screen active">
+        <!-- Onde a tartaruga será renderizada e interagirá -->
+        <div id="turtle-container" class="turtle-container">
+          <div id="turtle-speech-bubble" class="speech-bubble hidden"></div>
+          <div id="turtle-sprite" class="turtle-sprite ovinho"></div>
+        </div>
+
+        <!-- Painel de Coleções e Missões -->
+        <div class="bottom-menu">
+          <button id="btn-missions" class="btn-primary">🌊 Jogar Fases</button>
+          <button id="btn-album" class="btn-secondary">📘 Álbum</button>
+        </div>
+      </main>
+
+      <!-- Sobreposição do Menu de Missões -->
+      <section id="missions-menu" class="overlay hidden">
+        <div class="modal glass-panel">
+          <button class="close-btn" onclick="document.getElementById('missions-menu').classList.add('hidden')">✖</button>
+          <h2>Mapa de Fases</h2>
+          <div class="mission-list">
+            <button class="mission-btn" data-phase="1">
+              <h3>Fase 1: Nascimento</h3>
+              <p>Desvie dos predadores e chegue ao mar!</p>
+            </button>
+            <button class="mission-btn locked" data-phase="2">
+              <h3>Fase 2: Sobrevivência</h3>
+              <p>Coma os alimentos certos e evite o plástico.</p>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sobreposição do Álbum -->
+      <section id="album-menu" class="overlay hidden">
+        <div class="modal glass-panel">
+            <button class="close-btn" onclick="document.getElementById('album-menu').classList.add('hidden')">✖</button>
+            <h2>Álbum de Figurinhas</h2>
+            <div id="album-grid" class="album-grid">
+               <!-- Preenchido via JS -->
+            </div>
+        </div>
+      </section>
+
+      <!-- Tela de Minigame -->
+      <section id="minigame-screen" class="screen hidden">
+        <div class="minigame-header">
+           <h2 id="minigame-title">Minigame</h2>
+           <button id="btn-exit-minigame" class="btn-danger">Sair</button>
+        </div>
+        <div id="minigame-container" class="minigame-area">
+           <!-- Canvas ou DOM do Minigame renderizado aqui -->
+        </div>
+      </section>
+      
+      <!-- Tela Inicial do Jogo -->
+      <section id="start-screen" class="overlay">
+        <div class="modal glass-panel">
+          <h1>Salve as Tartarugas</h1>
+          <div class="tamar-info">
+             <p>Bem-vindo ao nosso projeto educativo inspirado no incrível <strong>Projeto Tamar</strong>!</p>
+             <p>As tartarugas marinhas existem há mais de 100 milhões de anos, mas hoje, a maioria das espécies está ameaçada de extinção devido à caça ilegal, pesca incidental, poluição e destruição de seus habitats pela ação humana.</p>
+             <p>Ao longo deste jogo, você vai acompanhar de perto o ciclo de vida de uma tartaruguinha. Sua missão é guiar nossa nova amiga pelos perigos do oceano, fazer as escolhas certas, limpar o ambiente e garantir que ela chegue segura à vida adulta!</p>
+          </div>
+          <button id="btn-start" class="btn-primary" style="margin-top: 2rem;">Jogar</button>
+        </div>
+      </section>
+
+      <!-- Modal Inicial para Escolher a Tartaruga -->
+      <section id="character-select" class="overlay hidden">
+        <div class="modal glass-panel">
+          <h2>Escolha sua Companheira</h2>
+          <p>Selecione a espécie de tartaruga que você irá proteger do nascimento à velhice.</p>
+          <div class="species-list">
+            <button class="species-btn" data-species="verde">
+              <div class="species-icon verde"></div>
+              <h3>Tartaruga Verde</h3>
+              <p>Rápida e ágil no oceano.</p>
+            </button>
+            <button class="species-btn" data-species="oliva">
+              <div class="species-icon oliva"></div>
+              <h3>Tartaruga Oliva</h3>
+              <p>Pequena e super resistente.</p>
+            </button>
+            <button class="species-btn" data-species="pente">
+              <div class="species-icon pente-marrom"></div>
+              <h3>Tartaruga de Pente</h3>
+              <p>Marrom e vive nos corais.</p>
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
