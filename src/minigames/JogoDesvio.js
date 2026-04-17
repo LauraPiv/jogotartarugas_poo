@@ -59,7 +59,7 @@ export class JogoNascimento extends Minigame {
             const el = document.createElement('div');
             el.classList.add('t-hatchling');
             el.innerHTML = '🐢';
-            el.style.left = \`\${20 + Math.random() * 60}%\`;
+            el.style.left = (20 + Math.random() * 60) + '%';
             el.style.top = '10%';
             this.container.appendChild(el);
             this.tartarugas.push({ el, y: 10, ativo: true });
@@ -75,8 +75,8 @@ export class JogoNascimento extends Minigame {
                 el.innerHTML = '🦅';
                 // Nasce perto do alvo
                 const targetLeft = parseFloat(alvo.el.style.left);
-                el.style.left = \`\${targetLeft + (Math.random() * 10 - 5)}%\`;
-                el.style.top = \`\${alvo.y - 15}%\`; // Pega de cima
+                el.style.left = (targetLeft + (Math.random() * 10 - 5)) + '%';
+                el.style.top = (alvo.y - 15) + '%'; // Pega de cima
                 
                 // Evento de "Tocar espanta a gaivota"
                 el.addEventListener('mousedown', () => {
@@ -100,7 +100,7 @@ export class JogoNascimento extends Minigame {
             if (!t.ativo) continue;
 
             t.y += 0.3; // Velocidade bem lenta
-            t.el.style.top = \`\${t.y}%\`;
+            t.el.style.top = (t.y) + '%';
 
             // Chegou no mar (80% da tela)
             if (t.y >= 80) {
@@ -124,7 +124,7 @@ export class JogoNascimento extends Minigame {
             
             // Move gaivota para a tartaruga alvo
             g.y += 0.8; // gaivota é mais veloz
-            g.el.style.top = \`\${g.y}%\`;
+            g.el.style.top = g.y + '%';
 
             // Checa Colisão com a tartaruga
             if (g.alvo && g.alvo.ativo) {
@@ -147,7 +147,7 @@ export class JogoNascimento extends Minigame {
             } else {
                 // Alvo não existe mais, vai emborq
                 g.y -= 1; 
-                g.el.style.top = \`\${g.y}%\`;
+                g.el.style.top = g.y + '%';
                 if (g.y < -10) {
                     g.ativo = false;
                     g.el.remove();
