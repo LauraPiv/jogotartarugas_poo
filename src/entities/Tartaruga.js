@@ -3,19 +3,12 @@ export class Tartaruga {
         this.nome = nome;
         this.especie = especie;
         this.idade = 'filhote'; // filhote, adolescente, adulta, idosa
-<<<<<<< HEAD
-        this.energia = 100;
-        this.experiencia = 0;
-        this.resistencia = 50;
-        this.velocidade = 50;
-=======
         this.saude = 100;
         this.energia = 100;
         this.fome = 50; // 0 é saciada, 100 é fome máxima
         this.felicidade = 50;
         this.experiencia = 0;
         this.isDormindo = false;
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
     }
 
     ganharExperiencia(pontos) {
@@ -23,18 +16,6 @@ export class Tartaruga {
         return this.experiencia;
     }
 
-<<<<<<< HEAD
-    gastarEnergia(quantidade) {
-        this.energia = Math.max(0, this.energia - quantidade);
-    }
-
-    recuperarEnergia(quantidade) {
-        this.energia = Math.min(100, this.energia + quantidade);
-    }
-
-    getInfo() {
-        return `${this.nome} (${this.especie}) - Idade: ${this.idade} | XP: ${this.experiencia}`;
-=======
     cicloDeVida() {
         if (this.isDormindo) {
             // Dormindo: recupera energia rapidamente
@@ -79,6 +60,5 @@ export class Tartaruga {
     // Método abstrato que será sobrescrito nas subclasses
     interagir() {
         return "Você fez carinho na tartaruga.";
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
     }
 }

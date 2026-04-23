@@ -2,13 +2,6 @@ import { TartarugaVerde, TartarugaOliva, TartarugaDePente } from '../entities/Es
 import { ComportamentoTartaruga } from '../entities/ComportamentoTartaruga.js';
 import { SistemaEducacao } from './SistemaEducacao.js';
 import { SistemaEvolucao } from './SistemaEvolucao.js';
-<<<<<<< HEAD
-import { SistemaImpactoAmbiental } from './SistemaImpactoAmbiental.js';
-import { GerenciadorMissoes } from './GerenciadorMissoes.js';
-import { JogoNascimento } from '../minigames/JogoDesvio.js';
-import { JogoSelecao } from '../minigames/JogoSelecao.js';
-import { Album } from '../collections/Album.js';
-=======
 import { OceanManager } from './OceanManager.js';
 import { GerenciadorMissoes } from './GerenciadorMissoes.js';
 import { JogoNascimento } from '../minigames/JogoDesvio.js';
@@ -21,7 +14,6 @@ import { MemoryGame } from '../minigames/MemoryGame.js';
 import { RunnerGame } from '../minigames/RunnerGame.js';
 import { Game2048 } from '../minigames/Game2048.js';
 import { BubbleJump } from '../minigames/BubbleJump.js';
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
 
 export class Game {
     constructor() {
@@ -31,11 +23,7 @@ export class Game {
         // Inicializa Sistemas
         this.sisEducacao = new SistemaEducacao();
         this.sisEvolucao = new SistemaEvolucao();
-<<<<<<< HEAD
-        this.sisImpacto = new SistemaImpactoAmbiental(document.getElementById('ocean-health'));
-=======
         this.sisOcean = new OceanManager(); 
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
         this.album = new Album(document.getElementById('album-grid'));
 
         // Elementos de UI
@@ -52,9 +40,6 @@ export class Game {
             albumMenu: document.getElementById('album-menu'),
             btnExitMinigame: document.getElementById('btn-exit-minigame'),
             hatchVideo: document.getElementById('hatch-video'),
-<<<<<<< HEAD
-            mainBgVideo: document.getElementById('main-bg-video')
-=======
             btnFeed: document.getElementById('btn-feed'),
             btnPet: document.getElementById('btn-pet'),
             btnSleep: document.getElementById('btn-sleep'),
@@ -73,16 +58,12 @@ export class Game {
             btnEducativo: document.getElementById('btn-educativo'),
             educativoMenu: document.getElementById('educativo-menu'),
             eduContent: document.getElementById('edu-content')
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
         };
         
         this.gerenciadorMissoes = new GerenciadorMissoes(this.ui.missionsList, (faseId) => this.iniciarMinigame(faseId));
 
         this.comportamento = null;
-<<<<<<< HEAD
-=======
         this.gameLoopInterval = null;
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
 
         this.bindEvents();
     }
@@ -118,12 +99,7 @@ export class Game {
         document.getElementById('turtle-container').addEventListener('click', () => {
              if (this.comportamento) {
                  this.comportamento.reagirClique(this.sisEducacao);
-<<<<<<< HEAD
-                 // Ganha 1 de XP a cada clique para incentivar interação
-                 this.ganharXP(1);
-=======
                  // XP removido: ganharXP(1)
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
              }
         });
 
@@ -140,8 +116,6 @@ export class Game {
 
         // Iniciar Missão movido para o GerenciadorMissoes
 
-<<<<<<< HEAD
-=======
         // Abrir Menu Arcade
         if(this.ui.btnArcade) {
             this.ui.btnArcade.addEventListener('click', () => {
@@ -175,13 +149,10 @@ export class Game {
             });
         });
 
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
         // Sair Minigame
         this.ui.btnExitMinigame.addEventListener('click', () => {
              this.voltarParaHub();
         });
-<<<<<<< HEAD
-=======
 
         if(this.ui.btnFeed) {
             this.ui.btnFeed.addEventListener('click', (e) => {
@@ -286,7 +257,6 @@ export class Game {
                 }
             });
         }
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
     }
 
     selecionarEspecie(especieStr, nome) {
@@ -317,9 +287,6 @@ export class Game {
              this.comportamento.atualizarVisualidadeIdade('filhote'); // Começa como filhote
              
              this.gerenciadorMissoes.atualizarProgresso('filhote', null);
-<<<<<<< HEAD
-             this.sisImpacto.modificarFundo('praia');
-=======
              this.sisOcean.iniciar();
              this.sisOcean.setEstagio('praia');
              
@@ -330,7 +297,6 @@ export class Game {
                  this.ui.statusPanel.classList.remove('hidden');
              }
              this.iniciarGameLoop();
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
         }, tempoHatch);
     }
 
@@ -341,28 +307,14 @@ export class Game {
         if (this.sisEvolucao.verificarEvolucao(this.playerTartaruga)) {
             this.comportamento.atualizarVisualidadeIdade(this.playerTartaruga.idade);
             this.comportamento.falar(`Eba! Eu evoluí para ${this.playerTartaruga.idade}!`);
-<<<<<<< HEAD
-            
-            // Muda fundo dependendo da evolução
-            if (this.playerTartaruga.idade === 'adolescente') this.sisImpacto.modificarFundo('oceano-raso');
-            if (this.playerTartaruga.idade === 'adulta') this.sisImpacto.modificarFundo('oceano-profundo');
-            if (this.playerTartaruga.idade === 'idosa') this.sisImpacto.modificarFundo('recifes');
-=======
                         // Muda fundo dependendo da evolução
              if (this.playerTartaruga.idade === 'adolescente') this.sisOcean.setEstagio('oceano-raso');
              if (this.playerTartaruga.idade === 'adulta') this.sisOcean.setEstagio('oceano-profundo');
              if (this.playerTartaruga.idade === 'idosa') this.sisOcean.setEstagio('recifes');
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
         }
         
         // Sempre checa missões ao ganhar XP ou mudar idade
         this.gerenciadorMissoes.atualizarProgresso(this.playerTartaruga.idade, null);
-<<<<<<< HEAD
-    }
-
-    atualizarUIInfo() {
-        this.ui.xpLabel.textContent = this.playerTartaruga.experiencia;
-=======
 
         // Desbloqueia figurinha por evolução
         if (this.playerTartaruga.idade === 'adolescente') this.album.desbloquearPorId('evolve_teen');
@@ -403,18 +355,12 @@ export class Game {
         if(this.ui.bars.hunger) this.ui.bars.hunger.style.width = `${100 - this.playerTartaruga.fome}%`;
         if(this.ui.bars.energy) this.ui.bars.energy.style.width = `${this.playerTartaruga.energia}%`;
         if(this.ui.bars.happiness) this.ui.bars.happiness.style.width = `${this.playerTartaruga.felicidade}%`;
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
     }
 
     iniciarMinigame(fase) {
         this.ui.missionsMenu.classList.add('hidden');
-<<<<<<< HEAD
-        this.ui.hubScreen.classList.remove('active');
-        this.ui.minigameScreen.classList.add('active');
-=======
         this.ui.hubScreen.classList.add('hidden');
         this.ui.minigameScreen.classList.remove('hidden');
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
         this.ui.minigameTitle.textContent = `Fase ${fase}`;
         this.faseAtualEmAndamento = fase;
 
@@ -424,8 +370,6 @@ export class Game {
         } else if (fase === '2') {
             this.minigameAtual = new JogoSelecao(this.ui.minigameContainer, (resultado) => this.finalizarMinigame(resultado));
             this.minigameAtual.iniciar();
-<<<<<<< HEAD
-=======
         } else if (fase === '3') {
             this.minigameAtual = new JogoRede(this.ui.minigameContainer, (resultado) => this.finalizarMinigame(resultado));
             this.minigameAtual.iniciar();
@@ -459,7 +403,6 @@ export class Game {
             this.minigameAtual.iniciar();
         } else {
             this.ui.minigameContainer.innerHTML = '<div style="display:flex; justify-content:center; align-items:center; height:100%;"><h2 style="color:white;">Construindo em breve... 🔨</h2></div>';
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
         }
     }
 
@@ -467,17 +410,6 @@ export class Game {
         alert(resultado.mensagem + `\nXP Ganho: ${resultado.xp}`);
         this.ganharXP(resultado.xp);
         
-<<<<<<< HEAD
-        // Atualiza missoes com a que acabou de passar
-        this.gerenciadorMissoes.atualizarProgresso(this.playerTartaruga.idade, this.faseAtualEmAndamento);
-        this.album.desbloquearPorId(this.faseAtualEmAndamento); // desbloqueia figurinha ao passar fase
-        
-        if (!resultado.vitoria && typeof resultado.danoAmbiental !== "undefined") {
-            this.sisImpacto.modificarSaude(-10);
-        }
-
-        this.voltarParaHub();
-=======
         // Aumenta felicidade apenas ao jogar minigames
         if(this.playerTartaruga) {
             this.playerTartaruga.ganharFelicidade(30);
@@ -495,28 +427,20 @@ export class Game {
          }
  
          this.voltarParaHub();
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
     }
 
     voltarParaHub() {
         if(this.minigameAtual) {
             this.minigameAtual.ativo = false;
         }
-<<<<<<< HEAD
-        this.ui.minigameScreen.classList.remove('active');
-        this.ui.hubScreen.classList.add('active');
-=======
         this.ui.minigameScreen.classList.add('hidden');
         this.ui.hubScreen.classList.remove('hidden');
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
         this.ui.minigameContainer.innerHTML = '';
         
         setTimeout(() => {
             this.comportamento.falar(this.sisEducacao.getCuriosidade());
         }, 1000);
     }
-<<<<<<< HEAD
-=======
 
     abrirEducativo() {
         this.ui.educativoMenu.classList.remove('hidden');
@@ -564,5 +488,4 @@ export class Game {
         if (categoria === 'ameacas') this.album.desbloquearPorId('edu_threats');
         if (categoria === 'tamar') this.album.desbloquearPorId('edu_tamar');
     }
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
 }

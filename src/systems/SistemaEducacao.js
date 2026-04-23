@@ -7,8 +7,6 @@ export class SistemaEducacao {
             "As tartarugas marinhas existem há mais de 100 milhões de anos!",
             "A poluição luminosa nas cidades desorienta os filhotes que nascem na praia."
         ];
-<<<<<<< HEAD
-=======
 
         this.conteudo = {
             especies: {
@@ -45,18 +43,14 @@ export class SistemaEducacao {
                 imagem: "/telainicial.mp4"
             }
         };
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
     }
 
     getCuriosidade() {
         const index = Math.floor(Math.random() * this.curiosidades.length);
         return this.curiosidades[index];
     }
-<<<<<<< HEAD
-=======
 
     getConteudo(categoria) {
         return this.conteudo[categoria] || this.conteudo.especies;
     }
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
 }

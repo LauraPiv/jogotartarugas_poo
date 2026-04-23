@@ -4,15 +4,6 @@ export class Album {
     constructor(elementUI) {
         this.container = elementUI;
         this.figurinhas = [
-<<<<<<< HEAD
-            new Figurinha(1, "Tartaruga Verde", "Herbívora, adora algas", "🐢", "especie"),
-            new Figurinha(2, "Plástico", "Vilão dos mares", "🛍️", "ameaca"),
-            new Figurinha(3, "Água-viva", "Parece plástico, mas é alimento!", "🪼", "ambiente")
-        ];
-        
-        // Simular que a primeira já vem desbloqueada
-        this.figurinhas[0].desbloquear();
-=======
             // ESPÉCIES
             new Figurinha(1, "Tartaruga Cabeçuda", "A mais comum no Brasil.", "fig_01.png", "especie"),
             new Figurinha(2, "Tartaruga de Pente", "Linda e ameaçada.", "fig_02.png", "especie"),
@@ -44,19 +35,12 @@ export class Album {
         
         // As 5 espécies começam desbloqueadas para o usuário conhecer o projeto
         for(let i=0; i<5; i++) this.figurinhas[i].desbloquear();
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
     }
 
     renderizar() {
         this.container.innerHTML = '';
         this.figurinhas.forEach(fig => {
             const el = document.createElement('div');
-<<<<<<< HEAD
-            el.className = `figurinha-card ${fig.desbloqueada ? '' : 'locked'}`;
-            el.innerHTML = `
-                <div class="figurinha-img" style="display:flex; justify-content:center; align-items:center; font-size:40px">${fig.imgEmoji}</div>
-                <h4>${fig.nome}</h4>
-=======
             el.className = `figurinha-card ${fig.desbloqueada ? 'unlocked' : 'locked'} type-${fig.tipo}`;
             
             // Se estiver desbloqueada, mostra a imagem. Se não, mostra o padrão de bloqueio.
@@ -75,20 +59,12 @@ export class Album {
                         </div>
                     </div>
                 </div>
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
             `;
             this.container.appendChild(el);
         });
     }
 
     desbloquearPorId(id) {
-<<<<<<< HEAD
-        const fig = this.figurinhas.find(f => f.id === id);
-        if (fig) {
-            fig.desbloquear();
-            this.renderizar();
-        }
-=======
         const fig = this.figurinhas.find(f => f.id == id);
         if (fig && !fig.desbloqueada) {
             fig.desbloquear();
@@ -96,6 +72,5 @@ export class Album {
             return true;
         }
         return false;
->>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
     }
 }
