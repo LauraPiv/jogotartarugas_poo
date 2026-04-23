@@ -64,14 +64,26 @@ export class ComportamentoTartaruga {
         requestAnimationFrame(() => this.loop());
     }
 
+<<<<<<< HEAD
     reagirClique(sistemaEducacao) {
         this.acordar(); // Se clicar, ela acorda
         
         // Pulo rapido
+=======
+    pular() {
+        this.acordar();
+>>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
         this.spriteElement.style.transform = `translate(${this.turtleX}px, ${this.turtleY - 30}px) scale(1.1)`;
         setTimeout(() => {
             this.spriteElement.style.transform = `translate(${this.turtleX}px, ${this.turtleY}px) scale(1)`;
         }, 200);
+<<<<<<< HEAD
+=======
+    }
+
+    reagirClique(sistemaEducacao) {
+        this.pular();
+>>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
 
         const curiosidade = sistemaEducacao.getCuriosidade();
         this.falar(curiosidade);

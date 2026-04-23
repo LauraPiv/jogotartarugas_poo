@@ -31,6 +31,14 @@
         </div>
       </section>
 
+<<<<<<< HEAD
+=======
+      <!-- Overlay de Dormir -->
+      <div id="sleep-overlay" class="sleep-overlay hidden">
+          <div class="zzz-text">Zzz...</div>
+      </div>
+
+>>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
       <!-- Interface Principal (Hub) -->
       <section id="home-hub" class="screen active">
         <div class="top-bar">
@@ -42,6 +50,7 @@
           </div>
         </div>
 
+<<<<<<< HEAD
         <div id="turtle-container" class="turtle-container">
           <div id="turtle-speech-bubble" class="speech-bubble hidden"></div>
           <div id="turtle-sprite" class="turtle-sprite ovinho"></div>
@@ -49,10 +58,77 @@
 
         <div class="bottom-menu">
           <button id="btn-missions" class="btn-primary">🌊 Jogar Fases</button>
+=======
+
+
+        <div id="turtle-container" class="turtle-container">
+          <div id="turtle-speech-bubble" class="speech-bubble hidden"></div>
+          <div id="turtle-sprite" class="turtle-sprite ovinho"></div>
+          
+          <!-- Painel Lateral de Status Espelhado -->
+          <div id="turtle-status-panel" class="turtle-status-panel hidden">
+              <div class="status-bar-container" title="Saúde">
+                  <span class="status-icon">❤️</span>
+                  <div class="status-bar-bg"><div class="status-bar-fill fill-health" id="bar-health"></div></div>
+              </div>
+              <div class="status-bar-container" title="Fome">
+                  <span class="status-icon">🍽️</span>
+                  <div class="status-bar-bg"><div class="status-bar-fill fill-hunger" id="bar-hunger"></div></div>
+              </div>
+              <div class="status-bar-container" title="Energia">
+                  <span class="status-icon">⚡</span>
+                  <div class="status-bar-bg"><div class="status-bar-fill fill-energy" id="bar-energy"></div></div>
+              </div>
+              <div class="status-bar-container" title="Felicidade">
+                  <span class="status-icon">😊</span>
+                  <div class="status-bar-bg"><div class="status-bar-fill fill-happiness" id="bar-happiness"></div></div>
+              </div>
+          </div>
+
+          <!-- Botões de Ação do Pet -->
+          <div class="pet-actions hidden" id="pet-actions">
+            <button id="btn-feed" class="pet-action-btn" title="Alimentar">🍎</button>
+            <button id="btn-pet" class="pet-action-btn" title="Fazer Carinho">❤️</button>
+            <button id="btn-sleep" class="pet-action-btn" title="Dormir">🌙</button>
+          </div>
+        </div>
+        
+        <!-- Elemento de Comida Arrastável -->
+        <div id="draggable-food" class="draggable-food hidden">🍎</div>
+
+        <div class="bottom-menu">
+          <button id="btn-missions" class="btn-primary">🌊 Jogar Fases</button>
+          <button id="btn-arcade" class="btn-primary" style="background: #FF9F1C; box-shadow: 0 10px 0 #E56B00, 0 15px 25px rgba(0,0,0,0.2);">🎮 Arcade</button>
+          <button id="btn-educativo" class="btn-primary" style="background: #2D6A4F; box-shadow: 0 10px 0 #1B4332, 0 15px 25px rgba(0,0,0,0.2);">🐢 Educativo</button>
+>>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
           <button id="btn-album" class="btn-secondary">📘 Álbum</button>
         </div>
       </section>
 
+<<<<<<< HEAD
+=======
+      <!-- Sobreposição do Menu Educativo -->
+      <section id="educativo-menu" class="overlay hidden">
+        <div class="modal glass-panel educational-modal">
+          <button class="close-btn" onclick="document.getElementById('educativo-menu').classList.add('hidden')">✖</button>
+          <div class="edu-header">
+            <h2>Espaço Educativo Projeto Tamar</h2>
+          </div>
+          
+          <div class="edu-tabs">
+            <button class="edu-tab-btn active" data-tab="especies">🐢 Espécies</button>
+            <button class="edu-tab-btn" data-tab="ameacas">⚠️ Ameaças</button>
+            <button class="edu-tab-btn" data-tab="tamar">🌊 O Projeto</button>
+          </div>
+
+          <div id="edu-content" class="edu-body">
+            <!-- Conteúdo dinâmico via JS -->
+            <div class="edu-spinner">Carregando conhecimento...</div>
+          </div>
+        </div>
+      </section>
+
+>>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
       <!-- Sobreposição do Menu de Missões -->
       <section id="missions-menu" class="overlay hidden">
         <div class="modal glass-panel">
@@ -86,6 +162,54 @@
         </div>
       </section>
 
+<<<<<<< HEAD
+=======
+      <!-- Sobreposição do Arcade (Minigames) -->
+      <section id="arcade-menu" class="overlay hidden">
+        <div class="modal glass-panel">
+            <button class="close-btn" onclick="document.getElementById('arcade-menu').classList.add('hidden')">✖</button>
+            <h2>🎮 Fliperama do Oceano</h2>
+            <div id="arcade-grid" class="arcade-grid">
+               <button class="arcade-game-card" data-minigame="flappy">
+                  <div class="arcade-icon-wrapper">
+                    <img src="/flappyturtle.png" alt="Flappy Turtle" class="arcade-img">
+                  </div>
+                  <h3>Flappy Turtle</h3>
+                  <div class="arcade-pill">Desvie dos corais!</div>
+               </button>
+               <button class="arcade-game-card" data-minigame="memory">
+                  <div class="arcade-icon-wrapper">
+                    <img src="/jogomemoria.jfif" alt="Memória" class="arcade-img">
+                  </div>
+                  <h3>Memória</h3>
+                  <div class="arcade-pill">Ache os pares!</div>
+               </button>
+               <button class="arcade-game-card" data-minigame="runner">
+                  <div class="arcade-icon-wrapper">
+                    <img src="/desvielixo.jfif" alt="Fuga" class="arcade-img">
+                  </div>
+                  <h3>Fuga</h3>
+                  <div class="arcade-pill">Desvie do lixo!</div>
+               </button>
+               <button class="arcade-game-card" data-minigame="2048">
+                  <div class="arcade-icon-wrapper">
+                    <img src="/2048.jfif" alt="2048" class="arcade-img">
+                  </div>
+                  <h3>2048 Marinho</h3>
+                  <div class="arcade-pill">Junte os números!</div>
+               </button>
+               <button class="arcade-game-card" data-minigame="jump">
+                  <div class="arcade-icon-wrapper">
+                    <img src="/saltobolha.jfif" alt="Pulo na Bolha" class="arcade-img">
+                  </div>
+                  <h3>Pulo na Bolha</h3>
+                  <div class="arcade-pill">Suba alto!</div>
+               </button>
+            </div>
+        </div>
+      </section>
+
+>>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
       <!-- Tela de Minigame -->
       <section id="minigame-screen" class="screen hidden">
         <div class="minigame-header">

@@ -3,10 +3,17 @@ export class SistemaEvolucao {
         // Quantidade de XP necessária para cada estágio
         this.limiares = {
             'ovinho': 0,
+<<<<<<< HEAD
             'filhote': 100,
             'adolescente': 300,
             'adulta': 600,
             'idosa': 1000
+=======
+            'filhote': 0,
+            'adolescente': 20,
+            'adulta': 50,
+            'idosa': 100
+>>>>>>> ac35f340c660fb3285426aca9eeec2561995a406
         };
     }
 
