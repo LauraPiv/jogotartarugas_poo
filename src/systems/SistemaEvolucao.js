@@ -4,9 +4,9 @@ export class SistemaEvolucao {
         this.limiares = {
             'ovinho': 0,
             'filhote': 0,
-            'adolescente': 20,
-            'adulta': 50,
-            'idosa': 100
+            'adolescente': 100,
+            'adulta': 300,
+            'idosa': 800
         };
     }
 

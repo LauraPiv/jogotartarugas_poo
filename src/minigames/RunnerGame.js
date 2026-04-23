@@ -208,7 +208,7 @@ export class RunnerGame extends Minigame {
         setTimeout(() => {
             this.finalizar({
                 vitoria: false,
-                xp: Math.floor(this.score / 2), // XP é metade do score
+                xp: Math.floor(this.score / 5), // XP Escalado
                 mensagem: `Game Over!\nVocê coletou ${this.score} pontos nas profundezas.`
             });
         }, 1500);

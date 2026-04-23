@@ -216,8 +216,8 @@ export class BubbleJump extends Minigame {
         setTimeout(() => {
             this.finalizar({
                 vitoria: false,
-                xp: this.score,
-                mensagem: `Game Over!\nVocê subiu ${this.score} metros!\nE ganhou ${this.score} XP.`
+                xp: Math.floor(this.score / 2),
+                mensagem: `Game Over!\nVocê atingiu ${this.score} metros de profundidade!`
             });
         }, 1000);
     }

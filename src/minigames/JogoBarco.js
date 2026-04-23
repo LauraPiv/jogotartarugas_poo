@@ -204,7 +204,7 @@ export class JogoBarco extends Minigame {
         window.removeEventListener('keyup', this._handleUp);
         this.finalizar({
             vitoria,
-            xp: vitoria ? 400 : 80,
+            xp: vitoria ? 120 : 30,
             mensagem: vitoria ? "Incrível! Você atravessou a patrulha ilegal com maestria!" : "Você foi detectado pelos holofotes! Mergulhe mais fundo da próxima vez."
         });
     }

@@ -140,8 +140,8 @@ export class JogoSelecao extends Minigame {
         window.removeEventListener('keyup', this._onUp);
         this.finalizar({
             vitoria,
-            xp: vitoria ? 200 : 50,
-            mensagem: vitoria ? "Parabéns! Você se alimentou bem e está forte!" : "Oops! Você comeu muito lixo ou ficou fraco. Cuidado!"
+            xp: vitoria ? 60 : 15,
+            mensagem: vitoria ? "Sua tartaruga se alimentou muito bem!" : "Tente comer mais águas-vivas e evitar o plástico solto no mar, sua tartaruga passou mal!",
         });
     }
 }

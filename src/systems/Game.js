@@ -422,11 +422,198 @@ export class Game {
         // Atualiza missoes com a que acabou de passar
         this.gerenciadorMissoes.atualizarProgresso(this.playerTartaruga.idade, this.faseAtualEmAndamento);
         this.album.desbloquearPorId(this.faseAtualEmAndamento); // desbloqueia figurinha ao passar fase (ID 1, 2, 3, etc)
-                if (!resultado.vitoria && typeof resultado.danoAmbiental !== "undefined") {
+        if (!resultado.vitoria && typeof resultado.danoAmbiental !== "undefined") {
              this.sisOcean.poluir(10);
          }
+
+        const arcadeGames = ['flappy', 'memory', 'runner', '2048', 'jump'];
+        
+        // Sorteia figurinha ao final de um jogo do arcade
+        if (arcadeGames.includes(this.faseAtualEmAndamento) && (resultado.vitoria || resultado.xp > 0)) {
+            const figData = this.album.sortearFigurinha();
+            if (figData) {
+                // Ao invés de voltar para o Hub direto, tocamos a animação de abrir pacote primeiro
+                this.exibirAnimacaoPacotinho(figData.figurinha, figData.isNew, () => {
+                    this.voltarParaHub();
+                });
+                return;
+            }
+        }
  
          this.voltarParaHub();
+    }
+
+    exibirAnimacaoPacotinho(figurinha, isNew, callback) {
+        const overlay = document.createElement('div');
+        overlay.id = 'pack-opening-overlay';
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100vw';
+        overlay.style.height = '100vh';
+        overlay.style.zIndex = '9999';
+        overlay.style.background = 'radial-gradient(circle at center, rgba(3,4,94,0.85) 0%, rgba(0,0,0,0.95) 100%)';
+        overlay.style.display = 'flex';
+        overlay.style.flexDirection = 'column';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.backdropFilter = 'blur(10px)';
+
+        const corRaridade = this.album.getCorRaridade(figurinha.raridade);
+
+        overlay.innerHTML = `
+            <style>
+                @keyframes packShake {
+                    0%, 100% { transform: scale(1) rotate(0deg); }
+                    25% { transform: scale(1.05) rotate(-5deg); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
+                    50% { transform: scale(1.05) rotate(5deg); }
+                    75% { transform: scale(1.05) rotate(-5deg); }
+                }
+                @keyframes packBurst {
+                    0% { transform: scale(1); opacity: 1; filter: brightness(1); }
+                    40% { transform: scale(1.4); opacity: 1; filter: brightness(2); }
+                    100% { transform: scale(0); opacity: 0; filter: brightness(4); }
+                }
+                @keyframes cardReveal {
+                    0% { transform: scale(0) translateY(100px) rotateY(90deg); opacity: 0; }
+                    100% { transform: scale(1) translateY(0) rotateY(0deg); opacity: 1; }
+                }
+                @keyframes shineRare {
+                    0% { box-shadow: 0 0 15px ${corRaridade}, 0 0 30px ${corRaridade} inset; }
+                    100% { box-shadow: 0 0 40px ${corRaridade}, 0 0 60px ${corRaridade}, 0 0 20px ${corRaridade} inset; }
+                }
+                @keyframes popIn {
+                    0% { transform: scale(0) rotate(0deg); }
+                    70% { transform: scale(1.3) rotate(20deg); }
+                    100% { transform: scale(1) rotate(15deg); }
+                }
+                .pack-img {
+                    width: 180px;
+                    height: 260px;
+                    background: linear-gradient(135deg, #FF9F1C, #F4A261);
+                    border: 6px solid #FFF;
+                    border-radius: 15px;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.5);
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-size: 5rem;
+                    cursor: pointer;
+                    animation: packShake 2s infinite ease-in-out;
+                    user-select: none;
+                    transition: filter 0.2s;
+                }
+                .pack-img:hover {
+                    filter: brightness(1.2);
+                }
+                .pack-img::after {
+                    content: "ABRIR!";
+                    font-size: 1.5rem;
+                    font-family: 'Outfit', sans-serif;
+                    font-weight: 900;
+                    letter-spacing: 2px;
+                    margin-top: 15px;
+                    text-shadow: 0 4px 6px rgba(0,0,0,0.3);
+                }
+                .revealed-card {
+                    display: none;
+                    flex-direction: column;
+                    align-items: center;
+                    background: linear-gradient(180deg, #FFFFFF, #F8F9FA);
+                    padding: 25px;
+                    border-radius: 20px;
+                    border: 8px solid ${corRaridade};
+                    width: 260px;
+                    text-align: center;
+                    animation: cardReveal 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, shineRare 1.5s infinite alternate ease-in-out;
+                    position: relative;
+                }
+                .new-badge {
+                    position: absolute;
+                    top: -25px;
+                    right: -25px;
+                    background: linear-gradient(45deg, #FF0055, #FF5500);
+                    color: white;
+                    font-weight: 900;
+                    font-size: 1.4rem;
+                    padding: 10px 20px;
+                    border-radius: 30px;
+                    border: 4px solid white;
+                    box-shadow: 0 10px 20px rgba(255,0,85,0.5);
+                    transform: rotate(15deg);
+                    animation: popIn 0.5s 0.8s backwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                }
+                .btn-continue {
+                    margin-top: 40px;
+                    padding: 15px 40px;
+                    font-size: 1.2rem;
+                    font-weight: 900;
+                    background: #48CAE4;
+                    color: #03045E;
+                    border: 3px solid white;
+                    border-radius: 50px;
+                    cursor: pointer;
+                    display: none;
+                    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    transition: all 0.2s;
+                }
+                .btn-continue:hover {
+                    background: #90E0EF;
+                    transform: scale(1.05) translateY(-5px);
+                    box-shadow: 0 15px 25px rgba(0,0,0,0.4);
+                }
+            </style>
+            
+            <h2 id="pack-title" style="color: white; font-family: 'Outfit', sans-serif; font-size: 3rem; margin-bottom: 40px; text-shadow: 0 5px 15px rgba(0,0,0,0.5); text-align: center;">Pacote de Figurinhas!</h2>
+            
+            <div id="pack-container" class="pack-img">
+                🌟
+            </div>
+            
+            <div id="card-reveal" class="revealed-card">
+                ${isNew ? '<div class="new-badge">NOVA!</div>' : ''}
+                ${figurinha.imgEmoji.includes('.') 
+                    ? `<img src="${figurinha.imgEmoji}" style="width: 130px; height: 130px; object-fit: contain; margin-bottom: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); border-radius: 10px;">` 
+                    : `<div style="font-size: 8rem; margin-bottom: 20px; text-shadow: 0 10px 10px rgba(0,0,0,0.2);">${figurinha.imgEmoji}</div>`
+                }
+                <h3 style="color: #1B4332; margin: 0; font-size: 1.6rem; font-family: 'Outfit', sans-serif; font-weight: 900;">${figurinha.nome}</h3>
+                <span style="color: ${corRaridade}; font-weight: 900; text-transform: uppercase; font-size: 1rem; letter-spacing: 3px; margin: 10px 0; display: block; background: rgba(0,0,0,0.05); padding: 5px 15px; border-radius: 20px;">${figurinha.raridade}</span>
+                <p style="color: #555; font-size: 1rem; margin: 0; font-weight: 600; line-height: 1.4;">${figurinha.descricao}</p>
+            </div>
+            
+            <button id="btn-continue-pack" class="btn-continue">Coletar</button>
+        `;
+
+        document.body.appendChild(overlay);
+
+        const pack = overlay.querySelector('#pack-container');
+        const card = overlay.querySelector('#card-reveal');
+        const btnContinue = overlay.querySelector('#btn-continue-pack');
+        const title = overlay.querySelector('#pack-title');
+
+        pack.addEventListener('click', () => {
+            // Inicia explosão
+            pack.style.animation = 'packBurst 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
+            
+            setTimeout(() => {
+                pack.style.display = 'none';
+                card.style.display = 'flex';
+                title.textContent = "Você tirou:";
+                
+                setTimeout(() => {
+                    btnContinue.style.display = 'block';
+                }, 800);
+            }, 500);
+        });
+
+        btnContinue.addEventListener('click', () => {
+            overlay.remove();
+            if(callback) callback();
+        });
     }
 
     voltarParaHub() {

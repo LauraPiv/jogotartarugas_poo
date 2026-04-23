@@ -126,8 +126,8 @@ export class JogoRede extends Minigame {
         window.removeEventListener('keyup', this._keyup);
         this.finalizar({
             vitoria,
-            xp: vitoria ? 250 : 50,
-            mensagem: vitoria ? "Ufa! Você escapou das redes de pesca industrial!" : "Preso! As redes foram mais rápidas que você. Tente nadar com mais fôlego!"
+            xp: vitoria ? 80 : 20,
+            mensagem: vitoria ? "Você escapou da rede fantasma!" : "Você ficou preso por muito tempo e perdeu forças..."
         });
     }
 }

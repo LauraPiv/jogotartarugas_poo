@@ -173,7 +173,7 @@ export class FlappyTurtle extends Minigame {
         setTimeout(() => {
             this.finalizar({
                 vitoria: false, // Minigame infinito
-                xp: this.score * 5, // 5 XP por cano passado
+                xp: this.score * 2, // 2 XP por cano passado
                 mensagem: `Fim de Jogo!\nVocê passou por ${this.score} recifes de corais.`
             });
         }, 1200);

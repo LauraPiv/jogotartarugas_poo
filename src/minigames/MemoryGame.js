@@ -127,7 +127,7 @@ export class MemoryGame extends Minigame {
         setTimeout(() => {
             this.finalizar({
                 vitoria: true,
-                xp: 30,
+                xp: 15,
                 mensagem: "Parabéns! Você encontrou todos os pares!"
             });
         }, 800);

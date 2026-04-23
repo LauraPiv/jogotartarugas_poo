@@ -249,8 +249,8 @@ export class Game2048 extends Minigame {
         setTimeout(() => {
             this.finalizar({
                 vitoria: false,
-                xp: Math.floor(this.score / 15),
-                mensagem: `Fim de Jogo!\nVocê fez ${this.score} pontos e chegou na peça: ${this.highestVal}\nRecebeu ${Math.floor(this.score / 15)} de XP.`
+                xp: Math.floor(this.score / 60),
+                mensagem: `Fim de Jogo!\nVocê fez ${this.score} pontos e chegou na peça: ${this.highestVal}`
             });
         }, 1500);
     }
