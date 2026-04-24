@@ -36,7 +36,7 @@ export class FlappyTurtle extends Minigame {
         
         // Posição inicial
         this.turtle.style.left = '100px';
-        this.y = this.container.clientHeight / 2 - 55; // Centralizando 110px/2
+        this.y = this.container.clientHeight / 2 - 50; // Centralizando 100px/2
         
         // Eventos
         this.container.addEventListener('mousedown', this.handleInput);
@@ -147,8 +147,8 @@ export class FlappyTurtle extends Minigame {
     }
 
     checkCollision(obs) {
-        // Hitbox menor que a imagem (110px) para ficar justo: 25px de margem interna
-        const turtleRect = { left: 100 + 25, right: 100 + 110 - 25, top: this.y + 25, bottom: this.y + 110 - 25 };
+        // Hitbox menor que a imagem (100px) para ficar justo: 20px de margem interna
+        const turtleRect = { left: 100 + 20, right: 100 + 100 - 20, top: this.y + 20, bottom: this.y + 100 - 20 };
         const obsRectX = { left: obs.x, right: obs.x + 80 };
         
         if (turtleRect.right > obsRectX.left && turtleRect.left < obsRectX.right) {

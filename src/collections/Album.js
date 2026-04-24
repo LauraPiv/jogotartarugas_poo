@@ -14,32 +14,32 @@ export class Album {
         // Base de dados das figurinhas do jogo
         this.figurinhas = [
             // Categoria: ESPÉCIES
-            new Figurinha(1, "Tartaruga Cabeçuda", "A mais comum no Brasil.", "/fig_01.png", "especie", "comum"),
-            new Figurinha(2, "Tartaruga de Pente", "Linda e ameaçada.", "/fig_02.png", "especie", "rara"),
-            new Figurinha(3, "Tartaruga Verde", "Navegadora dos mares.", "/fig_03.png", "especie", "comum"),
-            new Figurinha(4, "Tartaruga Oliva", "Pequena e valente.", "/fig_04.png", "especie", "rara"),
-            new Figurinha(5, "Tartaruga de Couro", "A gigante das profundezas.", "/fig_05.png", "especie", "lendaria"),
+            new Figurinha(1, "Tartaruga Cabeçuda", "A mais comum no Brasil.", "/figurinha1.png", "especie", "comum"),
+            new Figurinha(2, "Tartaruga de Pente", "Linda e ameaçada.", "/figurinha2.png", "especie", "rara"),
+            new Figurinha(3, "Tartaruga Verde", "Navegadora dos mares.", "/figura3.jpg", "especie", "comum"),
+            new Figurinha(4, "Tartaruga Oliva", "Pequena e valente.", "/figurinha4.jpg", "especie", "rara"),
+            new Figurinha(5, "Tartaruga de Couro", "A gigante das profundezas.", "/figurinha5.jpg", "especie", "lendaria"),
 
             // Categoria: AMEAÇAS (Educativo)
-            new Figurinha(6, "Rede Fantasma", "Armadilha no fundo do mar.", "/fig_06.png", "educativo", "comum"),
-            new Figurinha(7, "Poluição Plástica", "Sacolas não são águas-vivas!", "/fig_07.png", "educativo", "comum"),
-            new Figurinha(8, "Fotopoluição", "Luzes que desorientam.", "💡", "educativo", "rara"),
-            new Figurinha(9, "Mudanças Climáticas", "Perigo para os corais.", "🌡️", "educativo", "lendaria"),
-            new Figurinha(10, "Mancha de Óleo", "Cuidado na superfície!", "🛢️", "educativo", "rara"),
+            new Figurinha(6, "Rede Fantasma", "Armadilha no fundo do mar.", "/figurinha6.png", "educativo", "comum"),
+            new Figurinha(7, "Poluição Plástica", "Sacolas não são águas-vivas!", "/figurinha7.png", "educativo", "comum"),
+            new Figurinha(8, "Fotopoluição", "Luzes que desorientam.", "/figurinha8.png", "educativo", "rara"),
+            new Figurinha(9, "Mudanças Climáticas", "Perigo para os corais.", "/figurinha9.png", "educativo", "lendaria"),
+            new Figurinha(10, "Mancha de Óleo", "Cuidado na superfície!", "/figurinha10.png", "educativo", "rara"),
 
             // Categoria: ECOSSISTEMA
-            new Figurinha(11, "O Nascimento", "O início da jornada.", "/fig_11.png", "ambiente", "comum"),
-            new Figurinha(12, "Recife de Coral", "A cidade do oceano.", "/fig_12.png", "ambiente", "rara"),
-            new Figurinha(13, "Água-Viva", "O manjar predileto.", "/fig_13.png", "ambiente", "comum"),
-            new Figurinha(14, "Siri Atrevido", "Cuidado com as pinças!", "/fig_14.png", "ambiente", "comum"),
-            new Figurinha(15, "Estrela do Mar", "Habitante dos recifes.", "/fig_15.png", "ambiente", "rara"),
+            new Figurinha(11, "O Nascimento", "O início da jornada.", "/figurinha11.png", "ambiente", "comum"),
+            new Figurinha(12, "Recife de Coral", "A cidade do oceano.", "/figurinha12.png", "ambiente", "rara"),
+            new Figurinha(13, "Água-Viva", "O manjar predileto.", "/figurinha13.png", "ambiente", "comum"),
+            new Figurinha(14, "Siri Atrevido", "Cuidado com as pinças!", "/figurinha14.png", "ambiente", "comum"),
+            new Figurinha(15, "Estrela do Mar", "Habitante dos recifes.", "/figurinha15.png", "ambiente", "rara"),
 
             // Categoria: CONQUISTAS
-            new Figurinha('flappy', "Rei do Coral", "Mestre do Arcade!", "🏆", "conquista", "lendaria"),
-            new Figurinha('memory', "Mente Brilhante", "Memória de elefante!", "🧠", "conquista", "lendaria"),
-            new Figurinha('guardiao', "Guardião Tamar", "Parceiro da preservação.", "🛡️", "conquista", "lendaria"),
-            new Figurinha('explorador', "Explorador Marinho", "Conhece todos os cantos.", "🧭", "conquista", "rara"),
-            new Figurinha('ancestral', "Evolução Ancestral", "A jornada completa.", "🧬", "conquista", "lendaria")
+            new Figurinha('flappy', "Rei do Coral", "Mestre do Arcade!", "/figurinha16.jpg", "conquista", "lendaria"),
+            new Figurinha('memory', "Mente Brilhante", "Memória de elefante!", "/figurinha17.png", "conquista", "lendaria"),
+            new Figurinha('guardiao', "Guardião Tamar", "Parceiro da preservação.", "/figurinha18.jpg", "conquista", "lendaria"),
+            new Figurinha('explorador', "Explorador Marinho", "Conhece todos os cantos.", "/figurinha19.png", "conquista", "rara"),
+            new Figurinha('ancestral', "Evolução Ancestral", "A jornada completa.", "/figurinha20.jpg", "conquista", "lendaria")
         ];
         
         // Tenta carregar o progresso salvo no navegador
@@ -92,7 +92,10 @@ export class Album {
             const content = fig.desbloqueada 
                 ? `${mediaStr}
                    ${fig.quantidade > 1 ? `<div class="sticker-badge">${fig.quantidade}</div>` : ''}`
-                : `<div class="sticker-placeholder">?</div>`;
+                : `<div class="sticker-placeholder">
+                       <img src="/cartavesso.png" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px; filter: grayscale(0.5) brightness(0.8);">
+                       <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 3rem; font-weight: 900; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">?</div>
+                   </div>`;
 
             el.innerHTML = `
                 <div class="figurinha-inner">

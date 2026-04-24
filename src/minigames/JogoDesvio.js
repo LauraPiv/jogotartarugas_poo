@@ -83,7 +83,7 @@ export class JogoNascimento extends Minigame {
         this.frames++;
 
         // Animação de nado em direção ao mouse com suavização (lerp)
-        const lerpSpeed = 0.08;
+        const lerpSpeed = 0.15; // Mais responsivo
         let dx = this.targetPos.x - this.player.x;
         let dy = this.targetPos.y - this.player.y;
         
@@ -93,18 +93,20 @@ export class JogoNascimento extends Minigame {
         this.playerEl.style.left = `${this.player.x}%`;
         this.playerEl.style.top = `${this.player.y}%`;
 
-        // Rotação dinâmica fluida: aponta suavemente para o eixo x onde o mouse está
-        // Reduzindo o ângulo base para criar uma leve virada
-        let angle = 180 - (dx * 1.5); 
+        // Rotação dinâmica precisa usando atan2
+        // A imagem original (/turtle_baby.png) está virada para CIMA (0 graus)
+        // atan2 retorna o ângulo em relação ao eixo X positivo.
+        // Adicionamos 90 graus para alinhar o "topo" da imagem com a direção do movimento.
+        let angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
         
         // Crie um movimento de pezinho (wobble) enquanto se move
-        let speed = Math.sqrt(dx*dx + dy*dy);
-        let wobble = (speed > 1) ? Math.sin(this.frames * 0.3) * 10 : 0;
+        let dist = Math.sqrt(dx*dx + dy*dy);
+        let wobble = (dist > 0.5) ? Math.sin(this.frames * 0.4) * 8 : 0;
         
         this.playerEl.style.transform = `translateX(-50%) rotate(${angle + wobble}deg)`;
 
-        // Spawn gaivotas
-        if (this.frames % 30 === 0) {
+        // Spawn gaivotas (Mais frequente e mais rápido)
+        if (this.frames % 20 === 0) {
             const el = document.createElement('div');
             el.className = 'seagull-premium';
             const fromLeft = Math.random() > 0.5;
@@ -114,7 +116,10 @@ export class JogoNascimento extends Minigame {
             el.style.top = `${y}%`;
             if (!fromLeft) el.classList.add('flip');
             this.container.appendChild(el);
-            this.gaivotas.push({ el, x, y, vx: fromLeft ? 0.5 : -0.5 });
+            
+            // Velocidade aumentada e um pouco variada
+            const speed = 0.8 + (Math.random() * 0.5);
+            this.gaivotas.push({ el, x, y, vx: fromLeft ? speed : -speed });
         }
 
         for (let i = this.gaivotas.length - 1; i >= 0; i--) {
@@ -143,7 +148,7 @@ export class JogoNascimento extends Minigame {
     encerrar(vitoria) {
         if (!this.ativo) return;
         this.ativo = false;
-        window.removeEventListener('mousemove', this._onMouseMove);
+        this.container.removeEventListener('mousemove', this._onMouseMove);
         this.finalizar({
             vitoria,
             xp: vitoria ? 40 : 10,

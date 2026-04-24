@@ -4,7 +4,7 @@ class Fase {
         this.titulo = titulo;
         this.descricao = descricao;
         this.idadeMinima = idadeMinima;
-        this.status = 'bloqueada'; // bloqueada, disponivel, concluida
+        this.status = 'locked'; // locked, disponivel, completed
         this.requisito = statusRequisito; 
     }
 }
@@ -26,7 +26,7 @@ export class GerenciadorMissoes {
     atualizarProgresso(idadeAtual, faseConcluidaId) {
         if (faseConcluidaId) {
             const f = this.fases.find(f => f.id === faseConcluidaId);
-            if (f) f.status = 'concluida';
+            if (f) f.status = 'completed';
         }
 
         // Verifica desbloqueios
@@ -34,14 +34,14 @@ export class GerenciadorMissoes {
         const indiceIdadeAtual = idades.indexOf(idadeAtual);
 
         this.fases.forEach(fase => {
-            if (fase.status === 'bloqueada') {
+            if (fase.status === 'locked') {
                 const indiceRequisito = idades.indexOf(fase.idadeMinima);
                 const nivelIdadeAtingido = indiceIdadeAtual >= indiceRequisito;
                 
                 let faseAnteriorConcluida = true;
                 if (fase.requisito) {
                     const req = this.fases.find(f => f.id === fase.requisito);
-                    if (req && req.status !== 'concluida') faseAnteriorConcluida = false;
+                    if (req && req.status !== 'completed') faseAnteriorConcluida = false;
                 }
 
                 if (nivelIdadeAtingido && faseAnteriorConcluida) {
@@ -59,22 +59,21 @@ export class GerenciadorMissoes {
             const btn = document.createElement('button');
             btn.className = `mission-btn ${fase.status}`;
             
-            let icone = '';
-            if (fase.status === 'concluida') icone = '✅ ';
+            // Ícone removido
 
             btn.innerHTML = `
-                <h3>${icone}${fase.titulo}</h3>
+                <h3>${fase.titulo}</h3>
                 <p>${fase.descricao}</p>
                 <small style="opacity: 0.7;">Requer: ${fase.idadeMinima}</small>
             `;
 
             if (fase.status === 'disponivel') {
                 btn.addEventListener('click', () => this.onIniciarFase(fase.id));
-            } else if (fase.status === 'bloqueada') {
+            } else if (fase.status === 'locked') {
                 btn.style.opacity = '0.5';
                 btn.style.cursor = 'not-allowed';
             } else {
-                // concluida
+                // completed
                 btn.style.borderColor = 'green';
                 btn.addEventListener('click', () => this.onIniciarFase(fase.id)); // Permite jogar de novo
             }

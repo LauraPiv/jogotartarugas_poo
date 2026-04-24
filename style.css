@@ -294,12 +294,14 @@ button:active { transform: scale(0.9) translateY(5px); }
 ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
 /* Character Select - Horizontal 3-Column Layout */
-.species-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.species-grid {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   gap: 2rem;
-  margin-top: 2.5rem;
   width: 100%;
+  margin-top: 1.5rem;
+  flex-wrap: wrap; /* Permite quebrar se a tela for muito pequena, mas tenta manter horizontal */
 }
 
 .species-btn {
@@ -339,24 +341,18 @@ button:active { transform: scale(0.9) translateY(5px); }
 
 .species-btn.selected {
   border-color: var(--primary);
-  background: #E0FBFF;
+  background: rgba(76, 201, 240, 0.1);
   transform: scale(1.05);
-  box-shadow: 0 10px 0 var(--secondary);
+  box-shadow: 0 10px 30px rgba(76, 201, 240, 0.2);
 }
 
 .species-icon {
-  width: 130px; /* Reduzido de 160px para melhor encaixe vertical */
-  height: 130px;
-  border-radius: 50%;
+  width: 180px;
+  height: 150px;
   margin-bottom: 1.4rem;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.18);
-  background-size: cover;
-  background-position: center;
-  border: 6px solid white;
-  background-image: url('/icon_oliva.png');
+  object-fit: contain; /* Para img tags */
   transition: all 0.4s ease;
-  position: relative; /* Adicionado para permitir overlays */
-  overflow: hidden;
+  pointer-events: none;
 }
 
 /* Naming Section - Centralization and Style Repolish */
@@ -421,25 +417,21 @@ button:active { transform: scale(0.9) translateY(5px); }
   margin-top: 0.5rem;
 }
 
-/* Ajustes de cores para distinguir as espÃ©cies usando o mesmo modelo ultra-fofo */
+/* Ajustes de cores para distinguir as espécies usando o mesmo modelo */
 .species-icon.couro { 
-  filter: brightness(0.2) contrast(1.3) grayscale(0.6); /* Muito escura para couro */
-}
-.species-icon.couro::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.8) 1.5px, transparent 1.5px);
-  background-size: 12px 12px;
-  opacity: 0.4;
+  /* Sem filtros para evitar artefatos, conforme solicitado */
 }
 
 .species-icon.oliva { 
-  filter: saturate(1.2) hue-rotate(-10deg); 
+  filter: saturate(1.4) drop-shadow(0 0 0 transparent);
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .species-icon.pente-marrom { 
-  filter: sepia(0.8) saturate(1.8) brightness(0.7) contrast(1.1); /* Tom marrom/terroso */
+  filter: sepia(1) hue-rotate(-20deg) saturate(1.5) brightness(0.9) drop-shadow(0 0 0 transparent);
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Mission Map - PREMIUM REDESIGN */
@@ -519,17 +511,7 @@ button:active { transform: scale(0.9) translateY(5px); }
 }
 
 .mission-btn::after {
-  content: 'â–¶';
-  font-size: 1.8rem;
-  color: var(--primary);
-  margin-left: auto;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
-}
-
-.mission-btn.locked::after { 
-  content: 'ðŸ”’'; 
-  color: #999; 
-  font-size: 1.5rem;
+  display: none;
 }
 
 /* Icone da MissÃ£o */
@@ -541,7 +523,7 @@ button:active { transform: scale(0.9) translateY(5px); }
   min-width: 60px;
 }
 
-/* --- Ãlbum de Figurinhas PREMIUM --- */
+/* --- Álbum de Figurinhas PREMIUM --- */
 .album-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -864,42 +846,14 @@ button:active { transform: scale(0.9) translateY(5px); }
   backdrop-filter: blur(5px);
   color: white;
   border-bottom: 4px solid var(--primary);
+  flex-shrink: 0;
 }
 
-.minigame-header h2 {
-  font-size: 2rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: #90e0ef;
-  text-shadow: 0 2px 10px rgba(0, 180, 216, 0.5);
-}
-
-.btn-danger {
-  background: var(--danger);
-  box-shadow: 0 8px 0 #9D0208, 0 10px 20px rgba(0,0,0,0.3);
-  padding: 0.8rem 2rem;
-  font-size: 1.2rem;
-}
-
-.minigame-area {
+.minigame-container {
   flex: 1;
   position: relative;
-  overflow: hidden;
   width: 100%;
-}
-
-/* Flappy Turtle Styles */
-.flappy-turtle {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  background-image: url('/turtle_teen.png'); /* Usando uma arte jÃ¡ disponÃ­vel */
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  z-index: 10;
-  transition: transform 0.1s;
+  overflow: hidden;
 }
 
 .flappy-obstacle {
@@ -1344,16 +1298,17 @@ button:active { transform: scale(0.9) translateY(5px); }
   z-index: 10;
 }
 
-/* Flappy Turtle Style */
+/* Flappy Turtle Style Consolidado */
 .flappy-turtle {
   position: absolute;
-  width: 110px;
-  height: 110px;
+  width: 100px;
+  height: 100px;
   background-image: url('/turtle_baby.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   z-index: 15;
+  filter: drop-shadow(0 8px 15px rgba(0,0,0,0.3));
 }
 
 /* --- Talking Tom Tamagotchi Styles --- */
@@ -1515,4 +1470,162 @@ button:active { transform: scale(0.9) translateY(5px); }
   0% { transform: scale(1); }
   50% { transform: scale(1.05); }
   100% { transform: scale(1); }
+}
+
+/* ==========================================================================
+   ANIMAÇÃO DE ABERTURA DE PACOTE
+   ========================================================================== */
+#pack-opening-screen {
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.pack-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.pack-container {
+  width: 280px;
+  height: 400px;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  border-radius: 15px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(255,255,255,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  border: 8px solid #FFF;
+}
+
+.pack-container:hover {
+  transform: scale(1.05) rotate(2deg);
+}
+
+.pack-front {
+  text-align: center;
+  color: #FFF;
+}
+
+.pack-logo {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.pack-subtitle {
+  font-size: 1rem;
+  font-weight: 800;
+  margin-top: 10px;
+  opacity: 0.9;
+}
+
+.pack-decoration {
+  font-size: 5rem;
+  margin-top: 30px;
+  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+}
+
+.pack-shake {
+  animation: shakePack 0.5s ease-in-out infinite;
+}
+
+@keyframes shakePack {
+  0%, 100% { transform: rotate(0deg) scale(1.05); }
+  25% { transform: rotate(-3deg) scale(1.05); }
+  75% { transform: rotate(3deg) scale(1.05); }
+}
+
+.pack-open-anim {
+  animation: openPack 0.8s forwards cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+
+@keyframes openPack {
+  0% { transform: scale(1.05); opacity: 1; }
+  50% { transform: scale(1.2) rotate(10deg); opacity: 0.8; filter: brightness(2); }
+  100% { transform: scale(2); opacity: 0; filter: blur(20px); }
+}
+
+.pack-result {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 100;
+  width: 100%;
+}
+
+.pack-result.show {
+  animation: resultEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes resultEntry {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+#sticker-result-card {
+  width: 320px;
+  height: 480px;
+  background: white;
+  border-radius: 30px;
+  padding: 2.5rem;
+  box-shadow: 0 0 100px rgba(255, 215, 0, 0.4);
+  border: 10px solid #4CC9F0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+
+.result-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+  z-index: -1;
+  animation: glowRotate 10s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes glowRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.new-badge {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: linear-gradient(45deg, #F72585, #FF9F1C);
+  color: white;
+  padding: 10px 25px;
+  border-radius: 50px;
+  font-weight: 900;
+  font-size: 1.2rem;
+  border: 4px solid white;
+  box-shadow: 0 8px 15px rgba(247, 37, 133, 0.4);
+  transform: rotate(15deg);
+  z-index: 10;
+  animation: badgePop 0.5s 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+}
+
+@keyframes badgePop {
+  0% { transform: rotate(15deg) scale(0); }
+  100% { transform: rotate(15deg) scale(1); }
 }

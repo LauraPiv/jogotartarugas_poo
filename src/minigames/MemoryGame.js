@@ -3,8 +3,8 @@ import { Minigame } from './Minigame.js';
 export class MemoryGame extends Minigame {
     constructor(container, onComplete) {
         super(container, onComplete);
-        // Lista de Emojis originais
-        this.emojis = ['A', 'B', 'C', 'D', 'E', 'F'];
+        // Lista de Emojis Marinhos
+        this.emojis = ['🐢', '🐙', '🐚', '🦀', '🐠', '🐳', '🐡', '🐬'].slice(0, 6); // Usa 6 pares
         this.cards = [...this.emojis, ...this.emojis];
         this.flippedCards = [];
         this.matchedPairs = 0;

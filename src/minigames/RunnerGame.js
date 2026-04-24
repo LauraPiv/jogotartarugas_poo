@@ -23,7 +23,7 @@ export class RunnerGame extends Minigame {
             
             <div style="position: relative; z-index: 10; height: 100%;">
                 <div class="runner-score-display">Score: <span id="runner-score">0</span></div>
-                <div id="runner-start-msg" style="position:absolute; top:40%; left:50%; transform:translate(-50%, -50%); color:white; font-size:2rem; font-weight:bold; z-index:20; text-align:center; text-shadow: 2px 2px 5px rgba(0,0,0,0.5);">Use ESQUERDA e DIREITA<br>para desviar do lixo<br>e pegar comida!</div>
+                <div id="runner-start-msg" style="position:absolute; top:40%; left:50%; transform:translate(-50%, -50%); color:white; font-size:1.8rem; font-weight:bold; z-index:20; text-align:center; text-shadow: 2px 2px 5px rgba(0,0,0,0.5);">Use ESQUERDA e DIREITA<br>para desviar das sacolas (vermelhas)<br>e pegar águas-vivas (verdes)!</div>
                 <div class="runner-track" id="runner-track">
                     <div class="runner-lane"></div>
                     <div class="runner-lane"></div>
@@ -171,11 +171,17 @@ export class RunnerGame extends Minigame {
         const el = document.createElement('div');
         el.className = `runner-item ${isFood ? 'runner-food' : 'runner-obstacle'}`;
         
-        // Randomizar visuais
+        // Randomizar visuais (Bolinha Verde para Água-Viva, Bolinha Vermelha para Sacola Plástica)
         if (isFood) {
-            el.innerHTML = '<div style="width: 40px; height: 40px; background-color: #2ecc71; border-radius: 50%; box-shadow: 0 0 10px #2ecc71; margin: 10px auto;"></div>';
+            el.innerHTML = `
+                <div style="width: 60px; height: 60px; background: #2ecc71; border-radius: 50%; box-shadow: 0 0 20px #2ecc71; display: flex; align-items: center; justify-content: center; border: 3px solid white;">
+                    <img src="https://img.icons8.com/color/48/jellyfish.png" style="width: 40px; height: 40px;">
+                </div>`;
         } else {
-            el.innerHTML = '<div style="width: 40px; height: 40px; background-color: #e74c3c; border: 2px solid #c0392b; margin: 10px auto;"></div>';
+            el.innerHTML = `
+                <div style="width: 60px; height: 60px; background: #e74c3c; border-radius: 50%; box-shadow: 0 0 20px #e74c3c; display: flex; align-items: center; justify-content: center; border: 3px solid white;">
+                    <img src="https://img.icons8.com/color/48/plastic-bag.png" style="width: 40px; height: 40px;">
+                </div>`;
         }
         
         // Posição inicial no topo

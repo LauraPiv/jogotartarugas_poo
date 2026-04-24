@@ -28,6 +28,9 @@ export class JogoSelecao extends Minigame {
                     <div style="background: rgba(0,0,0,0.7); padding: 10px 25px; border-radius: 50px; color: white; border: 2px solid #90be6d; backdrop-filter: blur(10px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
                         <span style="font-size: 1.1rem; font-weight: 800; letter-spacing: 1px;">ENERGIA: <span id="sel-energy" style="color: #b5e48c;">${this.energia}</span>/10</span>
                     </div>
+                    <div style="background: rgba(0,0,0,0.7); padding: 10px 25px; border-radius: 50px; color: white; border: 2px solid #f94144; backdrop-filter: blur(10px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+                        <span style="font-size: 1.1rem; font-weight: 800; letter-spacing: 1px;">SAÚDE: <span id="sel-health" style="color: #f94144;">${this.saude}</span>%</span>
+                    </div>
                 </div>
 
                 <div id="sel-player" style="position: absolute; bottom: 80px; left: 50%; width: 120px; height: 120px; background-image: url('/turtle_baby.png'); background-size: contain; background-repeat: no-repeat; transform: translateX(-50%); z-index: 20; filter: drop-shadow(0 15px 10px rgba(0,0,0,0.4));"></div>

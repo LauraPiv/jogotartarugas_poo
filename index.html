@@ -172,6 +172,23 @@
         </div>
       </section>
 
+      <!-- Overlay: Abertura de Pacote de Figurinhas -->
+      <section id="pack-opening-screen" class="overlay hidden">
+        <div class="pack-wrapper" id="pack-wrapper">
+          <div class="pack-container" id="pack-container">
+            <div class="pack-front">
+              <div class="pack-logo">TAMAR</div>
+              <div class="pack-subtitle">COLEÇÃO MARINHA</div>
+              <div class="pack-decoration">🌊</div>
+            </div>
+          </div>
+          <div class="pack-result hidden" id="pack-result">
+            <div id="sticker-result-card"></div>
+            <button id="btn-close-pack" class="btn-primary" style="margin-top: 2rem;">Continuar</button>
+          </div>
+        </div>
+      </section>
+
       <!-- Menu Álbum -->
       <section id="album-menu" class="overlay hidden">
         <div class="modal glass-panel album-modal">
@@ -189,19 +206,19 @@
           <h1>Escolha sua Companheira</h1>
           <p style="margin-bottom: 2rem; opacity: 0.8;">Selecione a espécie que você irá proteger do nascimento à vida adulta.</p>
           
-          <div class="species-list">
+          <div class="species-grid">
             <button class="species-btn" data-species="couro">
-              <div class="species-icon couro"></div>
+              <img src="/icon_oliva.png" class="species-icon couro">
               <h3>T. de Couro</h3>
               <p>A gigante das profundezas.</p>
             </button>
-            <button class="species-btn" data-species="oliva">
-              <div class="species-icon oliva"></div>
+            <button class="species-btn selected" data-species="oliva">
+              <img src="/icon_oliva.png" class="species-icon oliva">
               <h3>T. Oliva</h3>
               <p>Pequena e super resistente.</p>
             </button>
-            <button class="species-btn" data-species="pente">
-              <div class="species-icon pente-marrom"></div>
+            <button class="species-btn" data-species="pente-marrom">
+              <img src="/icon_oliva.png" class="species-icon pente-marrom">
               <h3>T. de Pente</h3>
               <p>Vive nos recifes de corais.</p>
             </button>
@@ -220,13 +237,22 @@
 
       <!-- Tela de Início (Splash Screen) -->
       <section id="start-screen" class="overlay">
-        <div class="modal glass-panel">
-            <h1>Salve as Tartarugas</h1>
-            <div class="tamar-info">
-               <p>Bem-vinda ao projeto educativo inspirado no incrível <strong>Projeto Tamar</strong>!</p>
-               <p>Guie sua tartaruga pelos perigos do oceano, faça escolhas certas e ajude na preservação marinha.</p>
+        <div class="modal glass-panel" style="max-width: 700px; padding: 4rem;">
+            <h1 style="font-size: 3rem; color: var(--secondary); margin-bottom: 1.5rem;">Salve as Tartarugas</h1>
+            <div class="tamar-info" style="text-align: left; line-height: 1.8; font-size: 1.2rem; color: #444;">
+               <p style="margin-bottom: 1.5rem; font-weight: 800; color: #1B4332;">Bem-vinda ao projeto educativo inspirado no incrível trabalho do <strong>Projeto Tamar</strong>!</p>
+               <p style="margin-bottom: 1rem;">Milhares de tartarugas nascem todos os anos em nossas praias, mas a jornada delas está cheia de desafios. Desde o momento em que saem do ovo, elas enfrentam gaivotas, poluição e redes de pesca.</p>
+               <p style="margin-bottom: 1.5rem;"><strong>Sua Missão:</strong> Cuide da sua tartaruga, ajude-a a crescer, aprenda sobre a vida marinha e torne-se uma verdadeira guardiã do oceano!</p>
+               <div style="background: rgba(76, 201, 240, 0.1); padding: 1.5rem; border-radius: 20px; border-left: 6px solid var(--primary); margin-top: 2rem;">
+                  <ul style="list-style: none; padding: 0;">
+                     <li>🐢 Escolha sua espécie favorita</li>
+                     <li>🌊 Sobreviva aos perigos do mar aberto</li>
+                     <li>📖 Aprenda curiosidades reais com o Tamar</li>
+                     <li>✨ Colete figurinhas raras para o seu álbum</li>
+                  </ul>
+               </div>
             </div>
-            <button id="btn-start" class="btn-primary btn-pulse" style="margin-top: 2rem;">Jogar</button>
+            <button id="btn-start" class="btn-primary btn-pulse" style="margin-top: 3rem; width: 100%; font-size: 1.8rem;">Começar Jornada</button>
         </div>
       </section>
 

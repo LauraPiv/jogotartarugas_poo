@@ -17,11 +17,11 @@ export class BubbleJump extends Minigame {
             scaleX: 1
         };
         
-        // Físicas (Doodle Jump feelings)
-        this.gravity = 0.35;      // Mais flutuante (água)
-        this.jumpForce = -11;     // Pulo mais forte
-        this.acceleration = 1.5;  // Aceleração horizontal
-        this.friction = 0.85;     // Atrito (deslizamento suave quando solta a tecla)
+        // Físicas (MUITO mais potentes e rápidas)
+        this.gravity = 0.6;       // Gravidade forte para queda rápida
+        this.jumpForce = -20;      // Pulo super potente
+        this.acceleration = 3.5;   // Aceleração horizontal ultra rápida
+        this.friction = 0.9;       // Deslizamento fluido
         
         // Jogo
         this.score = 0;
