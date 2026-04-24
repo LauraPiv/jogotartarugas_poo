@@ -23,7 +23,7 @@ export class RunnerGame extends Minigame {
             
             <div style="position: relative; z-index: 10; height: 100%;">
                 <div class="runner-score-display">Score: <span id="runner-score">0</span></div>
-                <div id="runner-start-msg" style="position:absolute; top:40%; left:50%; transform:translate(-50%, -50%); color:white; font-size:2rem; font-weight:bold; z-index:20; text-align:center; text-shadow: 2px 2px 5px rgba(0,0,0,0.5);">Use ⬅️ e ➡️<br>para desviar do lixo<br>e pegar comida!</div>
+                <div id="runner-start-msg" style="position:absolute; top:40%; left:50%; transform:translate(-50%, -50%); color:white; font-size:2rem; font-weight:bold; z-index:20; text-align:center; text-shadow: 2px 2px 5px rgba(0,0,0,0.5);">Use ESQUERDA e DIREITA<br>para desviar do lixo<br>e pegar comida!</div>
                 <div class="runner-track" id="runner-track">
                     <div class="runner-lane"></div>
                     <div class="runner-lane"></div>
@@ -173,11 +173,9 @@ export class RunnerGame extends Minigame {
         
         // Randomizar visuais
         if (isFood) {
-            const foods = ['🪼', '🦐', '🌿'];
-            el.textContent = foods[Math.floor(Math.random() * foods.length)];
+            el.innerHTML = '<div style="width: 40px; height: 40px; background-color: #2ecc71; border-radius: 50%; box-shadow: 0 0 10px #2ecc71; margin: 10px auto;"></div>';
         } else {
-            const trashes = ['🥤', '🛢️', '🕸️', '🛍️'];
-            el.textContent = trashes[Math.floor(Math.random() * trashes.length)];
+            el.innerHTML = '<div style="width: 40px; height: 40px; background-color: #e74c3c; border: 2px solid #c0392b; margin: 10px auto;"></div>';
         }
         
         // Posição inicial no topo

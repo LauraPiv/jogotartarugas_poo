@@ -25,7 +25,7 @@ export class JogoBarco extends Minigame {
                 <div class="stealth-ui" style="position: absolute; top: 25px; left: 50%; transform: translateX(-50%); width: 350px; z-index: 100;">
                     <div style="background: rgba(0,0,0,0.85); padding: 10px 20px; border-radius: 15px; border: 2px solid #ffd60a; backdrop-filter: blur(10px);">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <span style="color: #ffd60a; font-weight: 900; font-size: 0.9rem; letter-spacing: 2px;">⚠️ ALERTA DE DETECÇÃO</span>
+                            <span style="color: #ffd60a; font-weight: 900; font-size: 0.9rem; letter-spacing: 2px;">! ALERTA DE DETECÇÃO</span>
                             <span id="alert-val" style="color: white; font-weight: 900;">0%</span>
                         </div>
                         <div style="width: 100%; height: 12px; background: #222; border-radius: 6px; overflow: hidden; border: 1px solid #444;">

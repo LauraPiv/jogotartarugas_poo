@@ -1,4 +1,4 @@
-import { TartarugaVerde, TartarugaOliva, TartarugaDePente } from '../entities/Especies.js';
+import { TartarugaDeCouro, TartarugaOliva, TartarugaDePente } from '../entities/Especies.js';
 import { ComportamentoTartaruga } from '../entities/ComportamentoTartaruga.js';
 import { SistemaEducacao } from './SistemaEducacao.js';
 import { SistemaEvolucao } from './SistemaEvolucao.js';
@@ -15,18 +15,25 @@ import { RunnerGame } from '../minigames/RunnerGame.js';
 import { Game2048 } from '../minigames/Game2048.js';
 import { BubbleJump } from '../minigames/BubbleJump.js';
 
+/**
+ * Classe Core do Jogo.
+ * Gerencia o estado global, a interface do usuário (UI) e a integração entre sistemas.
+ */
 export class Game {
     constructor() {
-        this.estadoAtual = 'selecao'; // selecao, hub, minigame
+        /** @type {string} Estado atual: 'selecao', 'hub' ou 'minigame' */
+        this.estadoAtual = 'selecao'; 
+        
+        /** @type {Tartaruga|null} Instância do pet do jogador */
         this.playerTartaruga = null;
         
-        // Inicializa Sistemas
-        this.sisEducacao = new SistemaEducacao();
-        this.sisEvolucao = new SistemaEvolucao();
-        this.sisOcean = new OceanManager(); 
+        // Inicialização dos Sub-sistemas
+        this.sistemaEducacao = new SistemaEducacao();
+        this.sistemaEvolucao = new SistemaEvolucao();
+        this.sistemaOceano = new OceanManager(); 
         this.album = new Album(document.getElementById('album-grid'));
 
-        // Elementos de UI
+        // Mapeamento centralizado de elementos da Interface
         this.ui = {
             xpLabel: document.getElementById('player-xp').querySelector('span'),
             hubScreen: document.getElementById('home-hub'),
@@ -60,48 +67,57 @@ export class Game {
             eduContent: document.getElementById('edu-content')
         };
         
+        // Gerenciador de Missões (Fluxo Narrativo)
         this.gerenciadorMissoes = new GerenciadorMissoes(this.ui.missionsList, (faseId) => this.iniciarMinigame(faseId));
 
+        /** @type {ComportamentoTartaruga|null} Controlador visual do sprite */
         this.comportamento = null;
         this.gameLoopInterval = null;
 
-        this.bindEvents();
+        // Configura ouvintes de eventos de UI
+        this.vincularEventos();
     }
 
-    bindEvents() {
-        // Tela Inicial -> Seleção de Espécie
+    /**
+     * Configura todos os event listeners do DOM.
+     */
+    vincularEventos() {
+        // Transição: Tela Inicial -> Seleção de Espécie
         document.getElementById('btn-start').addEventListener('click', () => {
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('character-select').classList.remove('hidden');
         });
 
-        // Seleção de Espécie
+        // Lógica de Seleção de Personagem
         let selectedSpeciesStr = null;
         document.querySelectorAll('.species-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                // Remove selected de todos
+                // Remove destaque de todos e aplica no selecionado
                 document.querySelectorAll('.species-btn').forEach(b => b.classList.remove('selected'));
                 e.currentTarget.classList.add('selected');
                 selectedSpeciesStr = e.currentTarget.dataset.species;
+                
+                // Exibe campo para digitar o nome
                 document.getElementById('naming-section').classList.remove('hidden');
             });
         });
 
-        // Confirmação do Nome e Nascimento
+        // Finalização da Seleção e Início da Introdução (Nascimento)
         document.getElementById('btn-confirm-turtle').addEventListener('click', () => {
              const inputStr = document.getElementById('turtle-name-input').value.trim();
              if(!selectedSpeciesStr) return;
+             
              const nomeDaTartaruga = inputStr || "Tartaruguinha";
              this.selecionarEspecie(selectedSpeciesStr, nomeDaTartaruga);
         });
 
-        // Interação no Hub
+        // Interação de Clique no Pet (Feedback visual/sonoro)
         document.getElementById('turtle-container').addEventListener('click', () => {
              if (this.comportamento) {
-                 this.comportamento.reagirClique(this.sisEducacao);
-                 // XP removido: ganharXP(1)
+                 this.comportamento.reagirClique(this.sistemaEducacao);
              }
         });
+
 
         // Abrir Menu Missões
         this.ui.btnMissions.addEventListener('click', () => {
@@ -248,10 +264,10 @@ export class Game {
                     this.playerTartaruga.isDormindo = !this.playerTartaruga.isDormindo;
                     if(this.playerTartaruga.isDormindo) {
                         this.ui.sleepOverlay.classList.remove('hidden');
-                        this.comportamento.falar("Zzz...");
+                        this.comportamento.falar("Zzz... 😴");
                     } else {
                         this.ui.sleepOverlay.classList.add('hidden');
-                        this.comportamento.falar("Bom dia!");
+                        this.comportamento.falar("Bom dia! ☀️");
                     }
                     this.atualizarUIInfo();
                 }
@@ -268,10 +284,11 @@ export class Game {
         }
 
         switch (especieStr) {
-            case 'verde': this.playerTartaruga = new TartarugaVerde(nome); break;
-            case 'oliva': this.playerTartaruga = new TartarugaOliva(nome); break;
-            case 'pente': this.playerTartaruga = new TartarugaDePente(nome); break;
+            case 'couro': this.playerTartaruga = new TartarugaDeCouro(nome); this.album.desbloquearPorId(5); break;
+            case 'oliva': this.playerTartaruga = new TartarugaOliva(nome); this.album.desbloquearPorId(4); break;
+            case 'pente': this.playerTartaruga = new TartarugaDePente(nome); this.album.desbloquearPorId(2); break;
         }
+        this.album.salvarProgresso();
 
         const sprite = document.getElementById('turtle-sprite');
         const bubble = document.getElementById('turtle-speech-bubble');
@@ -287,8 +304,8 @@ export class Game {
              this.comportamento.atualizarVisualidadeIdade('filhote'); // Começa como filhote
              
              this.gerenciadorMissoes.atualizarProgresso('filhote', null);
-             this.sisOcean.iniciar();
-             this.sisOcean.setEstagio('praia');
+             this.sistemaOceano.iniciar();
+             this.sistemaOceano.setEstagio('praia');
              
              if(this.ui.petActions) {
                  this.ui.petActions.classList.remove('hidden');
@@ -304,13 +321,13 @@ export class Game {
         this.playerTartaruga.ganharExperiencia(quantidade);
         this.atualizarUIInfo();
         
-        if (this.sisEvolucao.verificarEvolucao(this.playerTartaruga)) {
+        if (this.sistemaEvolucao.verificarEvolucao(this.playerTartaruga)) {
             this.comportamento.atualizarVisualidadeIdade(this.playerTartaruga.idade);
             this.comportamento.falar(`Eba! Eu evoluí para ${this.playerTartaruga.idade}!`);
                         // Muda fundo dependendo da evolução
-             if (this.playerTartaruga.idade === 'adolescente') this.sisOcean.setEstagio('oceano-raso');
-             if (this.playerTartaruga.idade === 'adulta') this.sisOcean.setEstagio('oceano-profundo');
-             if (this.playerTartaruga.idade === 'idosa') this.sisOcean.setEstagio('recifes');
+             if (this.playerTartaruga.idade === 'adolescente') this.sistemaOceano.setEstagio('oceano-raso');
+             if (this.playerTartaruga.idade === 'adulta') this.sistemaOceano.setEstagio('oceano-profundo');
+             if (this.playerTartaruga.idade === 'idosa') this.sistemaOceano.setEstagio('recifes');
         }
         
         // Sempre checa missões ao ganhar XP ou mudar idade
@@ -330,7 +347,7 @@ export class Game {
                 // Acordou naturalmente
                 if(!this.playerTartaruga.isDormindo && !this.ui.sleepOverlay.classList.contains('hidden')) {
                     this.ui.sleepOverlay.classList.add('hidden');
-                    this.comportamento.falar("Bom dia! Estou cheia de energia!");
+                    this.comportamento.falar("Bom dia! Estou cheia de energia! ☀️");
                 }
                 
                 this.atualizarUIInfo();
@@ -393,16 +410,16 @@ export class Game {
             this.minigameAtual = new MemoryGame(this.ui.minigameContainer, (resultado) => this.finalizarMinigame(resultado));
             this.minigameAtual.iniciar();
         } else if (gameId === 'runner') {
-            this.minigameAtual = new RunnerGame(this.ui.minigameContainer, (resultado) => this.finalizarMinigame(resultado), this.sisOcean);
+            this.minigameAtual = new RunnerGame(this.ui.minigameContainer, (resultado) => this.finalizarMinigame(resultado), this.sistemaOceano);
             this.minigameAtual.iniciar();
         } else if (gameId === '2048') {
             this.minigameAtual = new Game2048(this.ui.minigameContainer, (resultado) => this.finalizarMinigame(resultado));
             this.minigameAtual.iniciar();
         } else if (gameId === 'jump') {
-            this.minigameAtual = new BubbleJump(this.ui.minigameContainer, (resultado) => this.finalizarMinigame(resultado), this.sisOcean);
+            this.minigameAtual = new BubbleJump(this.ui.minigameContainer, (resultado) => this.finalizarMinigame(resultado), this.sistemaOceano);
             this.minigameAtual.iniciar();
         } else {
-            this.ui.minigameContainer.innerHTML = '<div style="display:flex; justify-content:center; align-items:center; height:100%;"><h2 style="color:white;">Construindo em breve... 🔨</h2></div>';
+            this.ui.minigameContainer.innerHTML = '<div style="display:flex; justify-content:center; align-items:center; height:100%;"><h2 style="color:white;">Construindo em breve...</h2></div>';
         }
     }
 
@@ -423,7 +440,7 @@ export class Game {
         this.gerenciadorMissoes.atualizarProgresso(this.playerTartaruga.idade, this.faseAtualEmAndamento);
         this.album.desbloquearPorId(this.faseAtualEmAndamento); // desbloqueia figurinha ao passar fase (ID 1, 2, 3, etc)
         if (!resultado.vitoria && typeof resultado.danoAmbiental !== "undefined") {
-             this.sisOcean.poluir(10);
+             this.sistemaOceano.poluir(10);
          }
 
         const arcadeGames = ['flappy', 'memory', 'runner', '2048', 'jump'];
@@ -458,6 +475,7 @@ export class Game {
         overlay.style.alignItems = 'center';
         overlay.style.justifyContent = 'center';
         overlay.style.backdropFilter = 'blur(10px)';
+        overlay.style.perspective = '1000px';
 
         const corRaridade = this.album.getCorRaridade(figurinha.raridade);
 
@@ -465,18 +483,19 @@ export class Game {
             <style>
                 @keyframes packShake {
                     0%, 100% { transform: scale(1) rotate(0deg); }
-                    25% { transform: scale(1.05) rotate(-5deg); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
-                    50% { transform: scale(1.05) rotate(5deg); }
-                    75% { transform: scale(1.05) rotate(-5deg); }
+                    25% { transform: scale(1.05) rotate(-3deg); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
+                    50% { transform: scale(1.05) rotate(3deg); }
+                    75% { transform: scale(1.05) rotate(-3deg); }
                 }
                 @keyframes packBurst {
-                    0% { transform: scale(1); opacity: 1; filter: brightness(1); }
-                    40% { transform: scale(1.4); opacity: 1; filter: brightness(2); }
-                    100% { transform: scale(0); opacity: 0; filter: brightness(4); }
+                    0% { transform: scale(1) rotate(0deg); opacity: 1; filter: brightness(1); }
+                    40% { transform: scale(1.2) rotate(10deg); opacity: 1; filter: brightness(1.5); }
+                    100% { transform: scale(1.5) rotate(-15deg) translateY(-50px) scaleX(1.2); opacity: 0; filter: brightness(3); }
                 }
                 @keyframes cardReveal {
-                    0% { transform: scale(0) translateY(100px) rotateY(90deg); opacity: 0; }
-                    100% { transform: scale(1) translateY(0) rotateY(0deg); opacity: 1; }
+                    0% { transform: scale(0.5) translateY(150px) rotateY(180deg) rotateZ(-15deg); opacity: 0; }
+                    60% { transform: scale(1.1) translateY(-10px) rotateY(20deg) rotateZ(5deg); opacity: 1; }
+                    100% { transform: scale(1) translateY(0) rotateY(0deg) rotateZ(0deg); opacity: 1; }
                 }
                 @keyframes shineRare {
                     0% { box-shadow: 0 0 15px ${corRaridade}, 0 0 30px ${corRaridade} inset; }
@@ -504,6 +523,8 @@ export class Game {
                     animation: packShake 2s infinite ease-in-out;
                     user-select: none;
                     transition: filter 0.2s;
+                    position: absolute;
+                    z-index: 10;
                 }
                 .pack-img:hover {
                     filter: brightness(1.2);
@@ -527,8 +548,10 @@ export class Game {
                     border: 8px solid ${corRaridade};
                     width: 260px;
                     text-align: center;
-                    animation: cardReveal 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, shineRare 1.5s infinite alternate ease-in-out;
+                    transform-style: preserve-3d;
+                    animation: cardReveal 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, shineRare 1.5s infinite alternate ease-in-out;
                     position: relative;
+                    z-index: 20;
                 }
                 .new-badge {
                     position: absolute;
@@ -543,7 +566,7 @@ export class Game {
                     border: 4px solid white;
                     box-shadow: 0 10px 20px rgba(255,0,85,0.5);
                     transform: rotate(15deg);
-                    animation: popIn 0.5s 0.8s backwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                    animation: popIn 0.5s 1.2s backwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
                 }
                 .btn-continue {
                     margin-top: 40px;
@@ -560,6 +583,7 @@ export class Game {
                     text-transform: uppercase;
                     letter-spacing: 2px;
                     transition: all 0.2s;
+                    z-index: 30;
                 }
                 .btn-continue:hover {
                     background: #90E0EF;
@@ -571,14 +595,14 @@ export class Game {
             <h2 id="pack-title" style="color: white; font-family: 'Outfit', sans-serif; font-size: 3rem; margin-bottom: 40px; text-shadow: 0 5px 15px rgba(0,0,0,0.5); text-align: center;">Pacote de Figurinhas!</h2>
             
             <div id="pack-container" class="pack-img">
-                🌟
+                ?
             </div>
             
             <div id="card-reveal" class="revealed-card">
                 ${isNew ? '<div class="new-badge">NOVA!</div>' : ''}
                 ${figurinha.imgEmoji.includes('.') 
                     ? `<img src="${figurinha.imgEmoji}" style="width: 130px; height: 130px; object-fit: contain; margin-bottom: 20px; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2)); border-radius: 10px;">` 
-                    : `<div style="font-size: 8rem; margin-bottom: 20px; text-shadow: 0 10px 10px rgba(0,0,0,0.2);">${figurinha.imgEmoji}</div>`
+                    : `<div style="font-size: 2rem; font-weight: bold; margin-bottom: 20px; color: #1B4332; text-shadow: 0 5px 5px rgba(0,0,0,0.1);">${figurinha.imgEmoji}</div>`
                 }
                 <h3 style="color: #1B4332; margin: 0; font-size: 1.6rem; font-family: 'Outfit', sans-serif; font-weight: 900;">${figurinha.nome}</h3>
                 <span style="color: ${corRaridade}; font-weight: 900; text-transform: uppercase; font-size: 1rem; letter-spacing: 3px; margin: 10px 0; display: block; background: rgba(0,0,0,0.05); padding: 5px 15px; border-radius: 20px;">${figurinha.raridade}</span>
@@ -625,7 +649,7 @@ export class Game {
         this.ui.minigameContainer.innerHTML = '';
         
         setTimeout(() => {
-            this.comportamento.falar(this.sisEducacao.getCuriosidade());
+            this.comportamento.falar(this.sistemaEducacao.getCuriosidade());
         }, 1000);
     }
 
@@ -639,7 +663,7 @@ export class Game {
     }
 
     renderizarConteudoEducativo(categoria) {
-        const data = this.sisEducacao.getConteudo(categoria);
+        const data = this.sistemaEducacao.getConteudo(categoria);
         if(!data) return;
 
         let html = `
@@ -656,12 +680,13 @@ export class Game {
                     <h3>${data.titulo}</h3>
                     <p>${data.texto}</p>
                     <div class="edu-grid ${categoria === 'especies' ? 'species-grid' : ''}">
-                        ${data.itens.map(item => `
-                            <div class="edu-subcard">
+                        ${data.itens.map((item, index) => `
+                            <div class="edu-subcard clickable-subcard" data-category="${categoria}" data-index="${index}" style="cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                                 ${item.foto ? `<img src="${item.foto}" alt="${item.nome}" class="edu-subcard-img">` : ''}
                                 <div class="edu-subcard-text">
                                     <h4>${item.nome}</h4>
                                     <p>${item.desc}</p>
+                                    <span style="display:block; margin-top:10px; font-size:0.8rem; color:#0077b6; font-weight:bold; text-transform: uppercase;">Clique e saiba mais +</span>
                                 </div>
                             </div>
                         `).join('')}
@@ -671,8 +696,70 @@ export class Game {
         `;
         this.ui.eduContent.innerHTML = html;
 
+        const subcards = this.ui.eduContent.querySelectorAll('.clickable-subcard');
+        subcards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                const cat = e.currentTarget.dataset.category;
+                const idx = e.currentTarget.dataset.index;
+                this.abrirDetalhesEdu(cat, idx);
+            });
+        });
+
         // Desbloqueia figurinha por curiosidade educativa
         if (categoria === 'ameacas') this.album.desbloquearPorId('edu_threats');
         if (categoria === 'tamar') this.album.desbloquearPorId('edu_tamar');
+    }
+
+    abrirDetalhesEdu(categoria, index) {
+        const item = this.sistemaEducacao.getConteudo(categoria).itens[index];
+        if (!item || !item.detalhes) return;
+
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100vw';
+        overlay.style.height = '100vh';
+        overlay.style.zIndex = '10000';
+        overlay.style.background = 'rgba(0,0,0,0.7)';
+        overlay.style.display = 'flex';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.backdropFilter = 'blur(5px)';
+        overlay.style.opacity = '0';
+        overlay.style.transition = 'opacity 0.3s ease';
+
+        let detalhesHtml = Object.entries(item.detalhes).map(([key, val]) => `
+            <div style="margin-bottom: 20px; background: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid #2a9d8f;">
+                <h4 style="color: #264653; margin: 0 0 8px 0; font-family: 'Outfit', sans-serif; font-size: 1.1rem;">${key}</h4>
+                <p style="margin: 0; color: #444; line-height: 1.6; font-size: 0.95rem;">${val}</p>
+            </div>
+        `).join('');
+
+        overlay.innerHTML = `
+            <div style="background: white; border-radius: 20px; padding: 30px; max-width: 550px; width: 90%; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.3); transform: translateY(50px); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                <button style="position: absolute; top: 15px; right: 15px; background: #f1faee; border: none; font-size: 1.2rem; font-weight: bold; cursor: pointer; color: #e63946; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s;" onmouseover="this.style.background='#e63946'; this.style.color='white';" onmouseout="this.style.background='#f1faee'; this.style.color='#e63946';" onclick="this.parentElement.parentElement.style.opacity='0'; setTimeout(()=>this.parentElement.parentElement.remove(), 300)">X</button>
+                
+                <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 2px solid #eee;">
+                    ${item.foto ? `<img src="${item.foto}" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">` : ''}
+                    <div>
+                        <h2 style="margin: 0; color: #1b4332; font-family: 'Outfit', sans-serif; font-size: 1.8rem;">${item.nome}</h2>
+                        <p style="margin: 5px 0 0 0; color: #666; font-size: 1rem;">${item.desc}</p>
+                    </div>
+                </div>
+                
+                <div style="max-height: 55vh; overflow-y: auto; padding-right: 15px;">
+                    ${detalhesHtml}
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+        
+        // Trigger reflow for animation
+        setTimeout(() => {
+            overlay.style.opacity = '1';
+            overlay.firstElementChild.style.transform = 'translateY(0)';
+        }, 10);
     }
 }

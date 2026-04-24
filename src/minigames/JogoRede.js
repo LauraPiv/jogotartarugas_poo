@@ -20,11 +20,11 @@ export class JogoRede extends Minigame {
             
             <div style="position: relative; z-index: 10; height: 100%;">
                 <div class="mission-header" style="position: absolute; top: 20px; right: 20px; background: rgba(255,0,0,0.4); padding: 10px 25px; border-radius: 30px; color: white; border: 2px solid white; backdrop-filter: blur(5px);">
-                    <span style="font-weight: 900; letter-spacing: 1px;">⚠️ FUJA DA REDE!</span>
+                    <span style="font-weight: 900; letter-spacing: 1px;">! FUJA DA REDE!</span>
                 </div>
 
                 <div id="net-overlay" style="position: absolute; left: -100%; top: 0; width: 80%; height: 100%; background: rgba(50,50,50,0.6); border-right: 15px solid #333; z-index: 5; box-shadow: 20px 0 50px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: flex-end; padding-right: 20px;">
-                    <div style="font-size: 10rem; opacity: 0.3; transform: rotate(-20deg);">🕸️</div>
+                    <div style="font-size: 5rem; opacity: 0.3; transform: rotate(-20deg); font-weight: 900; color: #fff;">REDE</div>
                 </div>
 
                 <div id="rede-player" style="position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; background-image: url('/turtle_teen.png'); background-size: contain; background-repeat: no-repeat; transform: translate(-50%, -50%) rotate(90deg); z-index: 20; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)); transition: all 0.1s linear;"></div>

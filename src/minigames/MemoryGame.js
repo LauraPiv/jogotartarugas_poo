@@ -4,7 +4,7 @@ export class MemoryGame extends Minigame {
     constructor(container, onComplete) {
         super(container, onComplete);
         // Lista de Emojis originais
-        this.emojis = ['🐢', '🐟', '🐙', '🦀', '🪸', '🐬'];
+        this.emojis = ['A', 'B', 'C', 'D', 'E', 'F'];
         this.cards = [...this.emojis, ...this.emojis];
         this.flippedCards = [];
         this.matchedPairs = 0;

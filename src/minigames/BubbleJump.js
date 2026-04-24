@@ -41,7 +41,7 @@ export class BubbleJump extends Minigame {
             
             <div style="position: relative; z-index: 10; height: 100%;">
                 <div class="runner-score-display">Altura: <span id="jump-score">0</span>m</div>
-                <div id="jump-start-msg" style="position:absolute; top:40%; left:50%; transform:translate(-50%, -50%); color:white; font-size:2rem; font-weight:bold; z-index:20; text-align:center; text-shadow: 2px 2px 5px rgba(0,0,0,0.5);">Pressione ⬅️ ou ➡️<br>para começar!</div>
+                <div id="jump-start-msg" style="position:absolute; top:40%; left:50%; transform:translate(-50%, -50%); color:white; font-size:2rem; font-weight:bold; z-index:20; text-align:center; text-shadow: 2px 2px 5px rgba(0,0,0,0.5);">Pressione ESQUERDA ou DIREITA<br>para começar!</div>
                 <div class="jump-track" id="jump-track">
                     <div class="jump-turtle" id="jump-turtle"></div>
                 </div>

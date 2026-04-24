@@ -26,7 +26,7 @@ export class JogoSelecao extends Minigame {
             <div style="position: relative; z-index: 10; height: 100%; overflow: hidden;">
                 <div style="position: absolute; top: 20px; left: 20px; display: flex; gap: 20px;">
                     <div style="background: rgba(0,0,0,0.7); padding: 10px 25px; border-radius: 50px; color: white; border: 2px solid #90be6d; backdrop-filter: blur(10px); box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
-                        <span style="font-size: 1.1rem; font-weight: 800; letter-spacing: 1px;">🔋 ENERGIA: <span id="sel-energy" style="color: #b5e48c;">${this.energia}</span>/10</span>
+                        <span style="font-size: 1.1rem; font-weight: 800; letter-spacing: 1px;">ENERGIA: <span id="sel-energy" style="color: #b5e48c;">${this.energia}</span>/10</span>
                     </div>
                 </div>
 
@@ -121,7 +121,7 @@ export class JogoSelecao extends Minigame {
         el.className = isFood ? 'food-item' : 'trash-item';
         
         if (isFood) {
-            el.innerHTML = `<span class="food-emoji">${Math.random() > 0.5 ? '🦐' : '🌿'}</span>`;
+            el.innerHTML = `<img src="https://img.icons8.com/color/96/jellyfish.png" class="trash-img" style="filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));">`;
         } else {
             el.innerHTML = `<img src="https://img.icons8.com/color/96/plastic-bag.png" class="trash-img">`;
         }

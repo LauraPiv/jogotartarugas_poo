@@ -23,7 +23,6 @@ export class JogoNascimento extends Minigame {
             
             <div style="position: relative; z-index: 10; height: 100%; overflow: hidden; pointer-events: none;">
                 <div class="mission-status" style="position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.6); padding: 12px 25px; border-radius: 50px; color: white; display: flex; align-items: center; gap: 15px; border: 3px solid #f4a261; backdrop-filter: blur(10px);">
-                    <span style="font-size: 1.8rem; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));">🐢</span>
                     <div>
                         <strong style="display: block; font-size: 0.8rem; text-transform: uppercase; color: #ffdd72; letter-spacing: 1.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">Missão Principal</strong>
                         <span style="font-size: 1.2rem; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">Chegue ao Mar!</span>

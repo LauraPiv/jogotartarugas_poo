@@ -59,12 +59,11 @@ export class GerenciadorMissoes {
             const btn = document.createElement('button');
             btn.className = `mission-btn ${fase.status}`;
             
-            let icone = '🔒';
-            if (fase.status === 'disponivel') icone = '🌊';
-            if (fase.status === 'concluida') icone = '✅';
+            let icone = '';
+            if (fase.status === 'concluida') icone = '✅ ';
 
             btn.innerHTML = `
-                <h3>${icone} ${fase.titulo}</h3>
+                <h3>${icone}${fase.titulo}</h3>
                 <p>${fase.descricao}</p>
                 <small style="opacity: 0.7;">Requer: ${fase.idadeMinima}</small>
             `;
